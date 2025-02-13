@@ -39,7 +39,7 @@
 
 // Criar um novo buffer
 void test1() {
-    printf ("Iniciando testes...");
+    printf ("Iniciando testes...\n");
 
     ufr_buffer_t buffer;
     ufr_buffer_init(&buffer); // Inicializa o buffer
@@ -48,27 +48,45 @@ void test1() {
                                                           * buffer é igual a MESSAGE_ITEM_SIZE 
                                                           * (um valor definido em algum lugar do código). */
     ufr_buffer_put(&buffer, "opa", 3); /* Adiciona a string "opa" (3 bytes) ao buffer*/
-    UFR_TEST_EQUAL_U64( buffer.size, 3L ); /* Verifica se o tamanho do buffer */
+    UFR_TEST_EQUAL_U64( buffer.size, 3L ); /* Verifica o tamanho do buffer */
+    ufr_buffer_clear(&buffer);
+    UFR_TEST_EQUAL_U64(buffer.size, 0);
 }
 
 void test2() {
     ufr_buffer_t* buffer = ufr_buffer_new(); /* Cria um novo buffer dinamicamente*/
-    UFR_TEST_NOT_NULL( buffer ); /* Verifica se o ponteiro retornado não é NULL
+    UFR_TEST_NOT_NULL(buffer); /* Verifica se o ponteiro retornado não é NULL
                                   * usando a macro UFR_TEST_NOT_NULL*/
+    ufr_buffer_free (buffer);                             
 }
 
 void teste_equal () {
-    int valor = 5;
+    unsigned long valor = 5;
 
-    UFR_TEST_EQUAL (valor, 5); 
-    UFR_TEST_EQUAL (valor, 10);
+    ufr_buffer_t* buffer = ufr_buffer_new();
+    UFR_TEST_NOT_NULL(buffer);
+
+    ufr_buffer_free(buffer);
+    UFR_TEST_NULL(buffer->ptr);
+    /*if (buffer->ptr == NULL){
+        printf ("NAO LIBEROU MEMORIA");
+
+    }*/
+    UFR_TEST_EQUAL_U64(buffer->max, 0L);
+    UFR_TEST_EQUAL_U64(buffer->size, 0L);
+
+    //UFR_TEST_EQUAL (valor, 5);
+    // UFR_TEST_EQUAL (valor, 10);
+    //UFR_TEST_TRUE (valor);
 }
 
 int main() {
-    //test1();
-    //printf ("Teste 1 feito!");
-    //test2();
+    test1();
+    printf ("Teste 1 feito!\n");
+    test2();
+    printf ("Teste 2 feito!\n");
     teste_equal();
-    
+   // printf ("Teste equal feito!\n");
+
     return 0;
 }
