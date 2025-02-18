@@ -119,24 +119,15 @@ void ufr_buffer_check_size(ufr_buffer_t* buffer, size_t plus_size) {
         exit (1);
     }
     
-    size_t required_size = buffer->size + plus_size;
-    if ( required_size >= buffer->max ) {
-        // Calcula a nova capacidade máxima (dobra o tamanho atual)
+    if ( buffer->size + plus_size >= buffer->max ) {
         const size_t new_max = buffer->max * 2;
-        
-       /* if (new_max < required_size) {
-            new_max = required_size;
-        }*/
-        
-        // Realoca o buffer para o novo tamanho.
         char* new_ptr = realloc(buffer->ptr, new_max);
         if ( !new_ptr ) {
             fprintf(stderr, "Falha ao realocar memória para o buffer\n");
             exit(1);
-        }
-        buffer->max = new_max;
-        buffer->ptr = new_ptr;
     }
+    buffer->ptr = new_ptr;
+    buffer->max = new_max;
 }
 
 /**
@@ -147,7 +138,7 @@ void ufr_buffer_check_size(ufr_buffer_t* buffer, size_t plus_size) {
  * @param size size of text
  */
 
-/* Adiciona um bloco de dados ao buffer. */
+/* Adiciona um bloco de dados ao buffer.*/
 void ufr_buffer_put(ufr_buffer_t* buffer, const char* text, size_t size) {
     ufr_buffer_check_size(buffer, size); //Verifica se há espaço suficiente no buffer
     memcpy(&buffer->ptr[buffer->size], text, size); //Copia os dados para o buffer
