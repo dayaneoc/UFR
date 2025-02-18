@@ -105,10 +105,12 @@ void test_check_size () {
     //Adiciona mais dados para testar redimesionamento.
     const char* data2 = "AB378CYZfajfbajhbfajajfa";
     ufr_buffer_put (buffer, data2, strlen(data2));
+    UFR_TEST_EQUAL_STR(buffer->ptr, "12345" "AB378CYZfajfbajhbfajajfa" );
+    UFR_TEST_EQUAL_U64(buffer->size, 40);
     ufr_buffer_print (buffer);
 
-    //ufr_buffer_check_size (buffer, 50);
-    //ufr_buffer_print (buffer);
+    ufr_buffer_check_size (buffer, 50);
+    ufr_buffer_print (buffer);
     //printf ("NOVO TAMANHO %d\n", buffer->max);
     test_buffer_free ();
 

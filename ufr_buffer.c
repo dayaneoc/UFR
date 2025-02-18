@@ -79,11 +79,8 @@ void ufr_buffer_init(ufr_buffer_t* buffer) {
 
 /* Libera a memória alocada para o buffer, se o ponteiro não for NULL. */
 void ufr_buffer_free(ufr_buffer_t* buffer) {
-    
-    if (buffer == NULL){
-        printf ("FALHA AO LIBERAR MEMORIA");
-        return;
-    } 
+    if (buffer == NULL) { printf ("FALHA AO LIBERAR MEMORIA"); return; }
+     
     free(buffer->ptr);
     buffer->ptr = NULL;
     
@@ -125,10 +122,12 @@ void ufr_buffer_check_size(ufr_buffer_t* buffer, size_t plus_size) {
         if ( !new_ptr ) {
             fprintf(stderr, "Falha ao realocar memória para o buffer\n");
             exit(1);
+        }  
+        buffer->ptr = new_ptr;
+        buffer->max = new_max;
+}  
     }
-    buffer->ptr = new_ptr;
-    buffer->max = new_max;
-}
+    
 
 /**
  * @brief Put text in the buffer

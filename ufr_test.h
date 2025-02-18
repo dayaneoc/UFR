@@ -68,3 +68,17 @@ int g_contador;
 #define UFR_TEST_NOT_NULL(current) if ( current != NULL ) { g_contador++; } else { printf("Error:%s:%d: the value is NULL, but expected not NULL\n", __FILE__, __LINE__); exit(1); }
 
 #define UFR_TEST_OK(current) if ( current == UFR_OK ) { g_contador++; } else { printf("Error:%s:%d: the value is %d, but expected %d\n", __FILE__, __LINE__, current, UFR_OK); exit(1); }
+
+
+
+#define um void main() {
+#define pessoa printf("opa");
+#define foi return 0;
+#define pao }
+
+
+um pessoa foi  pao 
+
+
+
+
