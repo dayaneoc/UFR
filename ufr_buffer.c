@@ -122,11 +122,11 @@ void ufr_buffer_check_size(ufr_buffer_t* buffer, size_t plus_size) {
     size_t required_size = buffer->size + plus_size;
     if ( required_size >= buffer->max ) {
         // Calcula a nova capacidade máxima (dobra o tamanho atual)
-        size_t new_max = buffer->max * 2;
+        const size_t new_max = buffer->max * 2;
         
-        if (new_max < required_size) {
+       /* if (new_max < required_size) {
             new_max = required_size;
-        }
+        }*/
         
         // Realoca o buffer para o novo tamanho.
         char* new_ptr = realloc(buffer->ptr, new_max);

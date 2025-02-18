@@ -33,34 +33,38 @@
 #include <stdlib.h>
 #include <string.h>
 
+int g_contador;
 
-#define UFR_TEST_EQUAL(current, expected) if ( current == expected ) { } else { printf("Error:%s:%d: the value is %d, but expected %d\n", __FILE__, __LINE__, current, expected ); exit(1); }
-
-#define UFR_TEST_EQUAL_I32(current, expected) if ( current == expected ) { } else { printf("Error:%s:%d: the value is %d, but expected %d\n", __FILE__, __LINE__, current, expected ); exit(1); }
-
-#define UFR_TEST_EQUAL_U32(current, expected) if ( current == expected ) { } else { printf("Error:%s:%d: the value is %u, but expected %u\n", __FILE__, __LINE__, current, expected ); exit(1); }
-
-#define UFR_TEST_EQUAL_F32(current, expected) if ( current == expected ) { } else { printf("Error:%s:%d: the value is %f, but expected %f\n", __FILE__, __LINE__, current, expected ); exit(1); }
+#define ufr_test_print_result() printf("OK - %d\n", g_contador)
 
 
-#define UFR_TEST_EQUAL_I64(current, expected) if ( current == expected ) {  } else { printf("Error:%s:%d: the value is %ld, but expected %ld\n", __FILE__, __LINE__, current, expected ); exit(1); }
+#define UFR_TEST_EQUAL(current, expected) if ( current == expected ) { g_contador++; } else { printf("Error:%s:%d: the value is %d, but expected %d\n", __FILE__, __LINE__, current, expected ); exit(1); }
 
-#define UFR_TEST_EQUAL_U64(current, expected) if ( current == expected ) { } else { printf("Error:%s:%d: the value is %lu, but expected %lu\n", __FILE__, __LINE__, current, expected ); exit(1); }
+#define UFR_TEST_EQUAL_I32(current, expected) if ( current == expected ) { g_contador++; } else { printf("Error:%s:%d: the value is %d, but expected %d\n", __FILE__, __LINE__, current, expected ); exit(1); }
 
-#define UFR_TEST_EQUAL_F64(current, expected) if ( current == expected ) { } else { printf("Error:%s:%d: the value is %g, but expected %g\n", __FILE__, __LINE__, current, expected ); printf("TESTE 1!"); exit(1); }
+#define UFR_TEST_EQUAL_U32(current, expected) if ( current == expected ) { g_contador++; } else { printf("Error:%s:%d: the value is %u, but expected %u\n", __FILE__, __LINE__, current, expected ); exit(1); }
+
+#define UFR_TEST_EQUAL_F32(current, expected) if ( current == expected ) {  g_contador++;} else { printf("Error:%s:%d: the value is %f, but expected %f\n", __FILE__, __LINE__, current, expected ); exit(1); }
 
 
-#define UFR_TEST_EQUAL_STR(current, expected) if ( strcmp(current, expected) == 0 ) { } else { printf("Error:%s:%d: the value is \"%s\", but expected \"%s\"\n", __FILE__, __LINE__, current, expected); exit(1); }
+#define UFR_TEST_EQUAL_I64(current, expected) if ( current == expected ) { g_contador++; } else { printf("Error:%s:%d: the value is %ld, but expected %ld\n", __FILE__, __LINE__, current, expected ); exit(1); }
+
+#define UFR_TEST_EQUAL_U64(current, expected) if ( current == expected ) { g_contador++; } else { printf("Error:%s:%d: the value is %lu, but expected %lu\n", __FILE__, __LINE__, current, expected ); exit(1); }
+
+#define UFR_TEST_EQUAL_F64(current, expected) if ( current == expected ) { g_contador++; } else { printf("Error:%s:%d: the value is %g, but expected %g\n", __FILE__, __LINE__, current, expected ); printf("TESTE 1!"); exit(1); }
 
 
-#define UFR_TEST_TRUE(current) if ( current ) { } else { printf("Error:%s:%d: the value is %d, but expected != 0\n", __FILE__, __LINE__, current); exit(1); }
+#define UFR_TEST_EQUAL_STR(current, expected) if ( strcmp(current, expected) == 0 ) { g_contador++; } else { printf("Error:%s:%d: the value is \"%s\", but expected \"%s\"\n", __FILE__, __LINE__, current, expected); exit(1); }
 
-#define UFR_TEST_FALSE(current) if ( !current ) { } else { printf("Error:%s:%d: the value is %d, but expected 0\n", __FILE__, __LINE__, current); exit(1); }
 
-#define UFR_TEST_ZERO(current) if ( current == 0 ) { } else { printf("Error:%s:%d: the value is %d, but expected 0\n", __FILE__, __LINE__, current); exit(1); }
+#define UFR_TEST_TRUE(current) if ( current ) { g_contador++; } else { printf("Error:%s:%d: the value is %d, but expected != 0\n", __FILE__, __LINE__, current); exit(1); }
 
-#define UFR_TEST_NULL(current) if ( current == NULL ) { } else { printf("Error:%s:%d: the value is %p, but expected NULL\n", __FILE__, __LINE__, current); exit(1); }
+#define UFR_TEST_FALSE(current) if ( !current ) { g_contador++; } else { printf("Error:%s:%d: the value is %d, but expected 0\n", __FILE__, __LINE__, current); exit(1); }
 
-#define UFR_TEST_NOT_NULL(current) if ( current != NULL ) { } else { printf("Error:%s:%d: the value is NULL, but expected not NULL\n", __FILE__, __LINE__); exit(1); }
+#define UFR_TEST_ZERO(current) if ( current == 0 ) { g_contador++; } else { printf("Error:%s:%d: the value is %d, but expected 0\n", __FILE__, __LINE__, current); exit(1); }
 
-#define UFR_TEST_OK(current) if ( current == UFR_OK ) { } else { printf("Error:%s:%d: the value is %d, but expected %d\n", __FILE__, __LINE__, current, UFR_OK); exit(1); }
+#define UFR_TEST_NULL(current) if ( current == NULL ) { g_contador++; } else { printf("Error:%s:%d: the value is %p, but expected NULL\n", __FILE__, __LINE__, current); exit(1); }
+
+#define UFR_TEST_NOT_NULL(current) if ( current != NULL ) { g_contador++; } else { printf("Error:%s:%d: the value is NULL, but expected not NULL\n", __FILE__, __LINE__); exit(1); }
+
+#define UFR_TEST_OK(current) if ( current == UFR_OK ) { g_contador++; } else { printf("Error:%s:%d: the value is %d, but expected %d\n", __FILE__, __LINE__, current, UFR_OK); exit(1); }
