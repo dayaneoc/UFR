@@ -71,14 +71,4 @@ int g_contador;
 
 
 
-#define um void main() {
-#define pessoa printf("opa");
-#define foi return 0;
-#define pao }
-
-
-um pessoa foi  pao 
-
-
-
 
