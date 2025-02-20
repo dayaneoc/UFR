@@ -116,17 +116,18 @@ void ufr_buffer_check_size(ufr_buffer_t* buffer, size_t plus_size) {
         exit (1);
     }
     
-    if ( buffer->size + plus_size >= buffer->max ) {
+    while (buffer->size + plus_size > buffer->max) {
         const size_t new_max = buffer->max * 2;
         char* new_ptr = realloc(buffer->ptr, new_max);
-        if ( !new_ptr ) {
-            fprintf(stderr, "Falha ao realocar memória para o buffer\n");
-            exit(1);
-        }  
-        buffer->ptr = new_ptr;
+
+        if ( !new_ptr) {
+            fprintf (stderr,"Ponteiro invalido!");
+        exit (1);
+        }
         buffer->max = new_max;
-}  
+        buffer->ptr = new_ptr;
     }
+}   
     
 
 /**
