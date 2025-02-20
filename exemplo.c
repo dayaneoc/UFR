@@ -113,20 +113,18 @@ void test_check_size () {
     const char* data2 = "AB378C";
     ufr_buffer_put (buffer, data2, strlen(data2));
     printf ("3) Adicionado dados maior que o tamanho max do buffer\n", data2);
+    ufr_buffer_print (buffer);
+    printf ("\n");
     UFR_TEST_EQUAL_STR(buffer->ptr, "12345" "AB378C" );
     printf ("TESTE STR OK\n");
     UFR_TEST_EQUAL_U64(buffer->size, 11);
     printf ("TESTE TAMANHO DO BUFFER OK\n");
-    ufr_buffer_print (buffer);
+    
     printf ("\n");
     //ufr_buffer_check_size (buffer, 20);
-    ufr_buffer_print (buffer);
-    //printf ("NOVO TAMANHO %d\n", buffer->max);
+    
    
-
     ufr_test_print_result ();
-    //test_buffer_free ();
-
 }
 
 void test_equal () {
