@@ -47,7 +47,6 @@
 
 /* Cria um novo buffer */
 ufr_buffer_t* ufr_buffer_new() {
-    
     ufr_buffer_t* buffer = malloc(sizeof(ufr_buffer_t));
     
     if (buffer == NULL) { 
@@ -65,7 +64,6 @@ ufr_buffer_t* ufr_buffer_new() {
 
 /* Inicializa um novo buffer do tipo ufr_buffer_t */
 void ufr_buffer_init(ufr_buffer_t* buffer) {
-    
     buffer->size = 0;
     buffer->max = MESSAGE_ITEM_SIZE;
     buffer->ptr = malloc(buffer->max);
@@ -79,7 +77,10 @@ void ufr_buffer_init(ufr_buffer_t* buffer) {
 
 /* Libera a memória alocada para o buffer, se o ponteiro não for NULL. */
 void ufr_buffer_free(ufr_buffer_t* buffer) {
-    if (buffer == NULL) { printf ("FALHA AO LIBERAR MEMORIA"); return; }
+    if (buffer == NULL) { 
+        printf ("FALHA AO LIBERAR MEMORIA");
+        return;
+    }
      
     free(buffer->ptr);
     buffer->ptr = NULL;
