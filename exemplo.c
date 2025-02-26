@@ -2,6 +2,7 @@
  * 
  * Copyright (c) 2024, Visao Robotica e Imagem (VRI)
  *  - Felipe Bombardelli <felipebombardelli@gmail.com>
+ *  - Dayane O. de Carvalho <dayaneoliveira.eng@gmail.com>
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,14 +34,21 @@
 #include "ufr_test.h"
 #include "assert.h"
 
+#define MAX_NUM 200
 // ============================================================================
 //  Tests
 // ============================================================================
 
+int aleatorio (int min, int max) {
+
+    int num = (rand () % MAX_NUM);
+    return (num);
+}
+
 void ufr_buffer_print (ufr_buffer_t* buffer) {
 
     //UFR_TEST_NOT_NULL (buffer);
-    printf ("BUFFER: SIZE= %ld, MAX= %ld, DATA= %.*s\n", buffer->size, buffer->max, (int)buffer->size, buffer->ptr);
+    printf ("BUFFER: SIZE = %ld, MAX = %ld, DATA = %.*s\n", buffer->size, buffer->max, (int)buffer->size, buffer->ptr);
     //ufr_test_print_result ();
 }
 
@@ -55,8 +63,8 @@ void test_buffer_init () {
     ufr_buffer_init (&buffer); // Inicializa o buffer
     UFR_TEST_EQUAL_U64 ( buffer.size, 0L ); /* Verifica se o tamanho inicial do buffer é 0 */ 
     UFR_TEST_EQUAL_U64 ( buffer.max, MESSAGE_ITEM_SIZE ); /* Verifica se a capacidade máxima do
-                                                          * buffer é igual a MESSAGE_ITEM_SIZE 
-                                                          * (um valor definido em algum lugar do código). */
+                                                           * buffer é igual a MESSAGE_ITEM_SIZE 
+                                                           * (valor definido em ufr_buffer.h). */
     UFR_TEST_TRUE (&buffer); 
     printf ("Teste_buffer_init OK\n");  
     ufr_test_print_result ();    
@@ -194,6 +202,10 @@ void test_buffer_put_chr () {
     ufr_test_print_result ();
     printf ("------------------------------------------------------------------------------");
     printf ("\n");
+}
+
+void test_buffer_put_u8 () {
+
 }
 
 /*void test_equal () {

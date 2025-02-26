@@ -141,6 +141,10 @@ void ufr_buffer_check_size(ufr_buffer_t* buffer, size_t plus_size) {
 
 /* Adiciona um bloco de dados ao buffer.*/
 void ufr_buffer_put(ufr_buffer_t* buffer, const char* text, size_t size) {
+    if (!buffer) {
+        fprintf (stderr,"Buffer invalido!");
+        exit (1);
+    }
     ufr_buffer_check_size(buffer, size); //Verifica se há espaço suficiente no buffer
     memcpy(&buffer->ptr[buffer->size], text, size); //Copia os dados para o buffer
     buffer->size += size; //atualiza o tamanho atual do buffer 
@@ -155,9 +159,13 @@ void ufr_buffer_put(ufr_buffer_t* buffer, const char* text, size_t size) {
 
 /* Adiciona um único caractere ao buffer. */
 void ufr_buffer_put_chr(ufr_buffer_t* buffer, char val) {
-    ufr_buffer_check_size(buffer, 1); //Verifica se há espaço suficiente no buffer usando
+    if (!buffer) {
+        fprintf (stderr,"Buffer invalido!");
+        exit (1);
+    }
+    ufr_buffer_check_size(buffer, 1); 
     buffer->ptr[buffer->size] = val;
-    buffer->size += 1; //Atualiza o tamanho atual do buffer
+    buffer->size += 1; 
 }
 
 /**
@@ -170,7 +178,12 @@ void ufr_buffer_put_chr(ufr_buffer_t* buffer, char val) {
 /*Converte um valor uint8_t (inteiro sem sinal de 8 bits) em uma string
  * e a adiciona ao buffer. */
 void ufr_buffer_put_u8_as_str(ufr_buffer_t* buffer, uint8_t val) {
-    ufr_buffer_check_size(buffer, 8); //Verifica se há espaço suficiente no buffer usando
+    if (!buffer) {
+        fprintf (stderr,"Buffer invalido!");
+        exit (1);
+    } 
+    ufr_buffer_check_size(buffer, 8); /* Verifica se o buffer tem espaço suficiente para
+                                       * acomodar um incremento de tamanho 8 bytes.*/
     char* base = &buffer->ptr[buffer->size];
     size_t size = 0;
 
@@ -181,7 +194,7 @@ void ufr_buffer_put_u8_as_str(ufr_buffer_t* buffer, uint8_t val) {
     } else {
         size = snprintf(base, 8, " %u", val);
     }
-    buffer->size += size; //Atualiza o tamanho atual do buffer.
+    buffer->size += size; 
 }
 
 /**
