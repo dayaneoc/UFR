@@ -112,7 +112,7 @@ void ufr_buffer_clear(ufr_buffer_t* buffer) {
  * de tamanho (plus_size). */
 void ufr_buffer_check_size(ufr_buffer_t* buffer, size_t plus_size) {
 
-    if (!buffer || !buffer->ptr) {
+    if (!buffer) {
         fprintf (stderr,"Buffer invalido!");
         exit (1);
     }
@@ -121,7 +121,7 @@ void ufr_buffer_check_size(ufr_buffer_t* buffer, size_t plus_size) {
         const size_t new_max = buffer->max * 2;
         char* new_ptr = realloc(buffer->ptr, new_max);
 
-        if ( !new_ptr) {
+        if (!new_ptr) {
             fprintf (stderr,"Ponteiro invalido!");
         exit (1);
         }
@@ -182,10 +182,17 @@ void ufr_buffer_put_u8_as_str(ufr_buffer_t* buffer, uint8_t val) {
         fprintf (stderr,"Buffer invalido!");
         exit (1);
     } 
-    ufr_buffer_check_size(buffer, 8); /* Verifica se o buffer tem espaço suficiente para
-                                       * acomodar um incremento de tamanho 8 bytes.*/
+    size_t max = buffer->ptr;
+
+    
+    ufr_buffer_check_size(buffer, 8); /* Verifica se há espaço para 8 bits*/
     char* base = &buffer->ptr[buffer->size];
     size_t size = 0;
+
+    /*if (!base) {
+        fprintf (stderr, " Ponteiro invalido!");
+        exit (1);
+    }*/
 
     /* Se o buffer estiver vazio, o valor é adicionado sem espaço antes.
      * Caso contrário, um espaço é adicionado antes do valor.*/
