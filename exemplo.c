@@ -215,11 +215,11 @@ void test_buffer_put_u8_as_str () {
     ufr_buffer_print (buffer);
     printf ("\n");
     printf ("Inserindo valor...\n");
-    ufr_buffer_put_u8_as_str (buffer, 100);
+    ufr_buffer_put_u8_as_str (buffer, 10);
     ufr_buffer_print (buffer);
     ufr_buffer_put_u8_as_str (buffer, 1);
     ufr_buffer_print (buffer);
-    ufr_buffer_put_u8_as_str (buffer, 55);
+    ufr_buffer_put_u8_as_str (buffer, 260);
     ufr_buffer_print (buffer);
     ufr_buffer_put_u8_as_str (buffer, 37);
     ufr_buffer_print (buffer);

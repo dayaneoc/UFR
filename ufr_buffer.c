@@ -181,8 +181,8 @@ void ufr_buffer_put_u8_as_str(ufr_buffer_t* buffer, uint8_t val) {
     } 
     
     // Verifica quantos bytes tem o valor de entrada.
-    size_t tam = (val > 99) ? 3 : (val > 9) ? 2 : 1;
-    ufr_buffer_check_size(buffer, tam); 
+    size_t tam = (val > 99) ? 4 : (val > 9) ? 3 : 2;
+    ufr_buffer_check_size(buffer, tam); // Redimensiona, caso necessário. 
     char* base = &buffer->ptr[buffer->size];
     size_t size;
 
