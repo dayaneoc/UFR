@@ -215,7 +215,7 @@ void test_buffer_put_u8_as_str () {
     ufr_buffer_print (buffer);
     printf ("\n");
     printf ("Inserindo valor...\n");
-    ufr_buffer_put_u8_as_str (buffer, 1);
+    ufr_buffer_put_u8_as_str (buffer, 100);
     ufr_buffer_print (buffer);
     ufr_buffer_put_u8_as_str (buffer, 1);
     ufr_buffer_print (buffer);
@@ -253,9 +253,9 @@ int main() {
     test_buffer_new     ();
     test_buffer_clear   ();
     test_buffer_free    ();
-    //test_check_size     (); 
-    //test_buffer_put     ();
-    //test_buffer_put_chr ();
+    test_check_size     (); 
+    test_buffer_put     ();
+    test_buffer_put_chr ();
     test_buffer_put_u8_as_str ();
     
     //test_equal();

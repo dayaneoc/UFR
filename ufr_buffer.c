@@ -62,7 +62,7 @@ ufr_buffer_t* ufr_buffer_new() {
  * @param buffer Buffer object
  */
 
-/* Inicializa um novo buffer do tipo ufr_buffer_t */
+/* Inicializa buffer */
 void ufr_buffer_init(ufr_buffer_t* buffer) {
     buffer->size = 0;
     buffer->max = MESSAGE_ITEM_SIZE;
@@ -78,13 +78,11 @@ void ufr_buffer_init(ufr_buffer_t* buffer) {
 /* Libera a memória alocada para o buffer, se o ponteiro não for NULL. */
 void ufr_buffer_free(ufr_buffer_t* buffer) {
     if (buffer == NULL) { 
-        printf ("FALHA AO LIBERAR MEMORIA");
+        printf ("Falha ao liberar memoria!");
         return;
     }
-     
     free(buffer->ptr);
     buffer->ptr = NULL;
-    
     buffer->max = 0;
     buffer->size = 0;
 }
@@ -111,7 +109,6 @@ void ufr_buffer_clear(ufr_buffer_t* buffer) {
 /* Verifica se o buffer tem espaço suficiente para acomodar um incremento
  * de tamanho (plus_size). */
 void ufr_buffer_check_size(ufr_buffer_t* buffer, size_t plus_size) {
-
     if (!buffer) {
         fprintf (stderr,"Buffer invalido!");
         exit (1);
@@ -175,24 +172,19 @@ void ufr_buffer_put_chr(ufr_buffer_t* buffer, char val) {
  * @param val unsigned int value to be converted and inserted
  */
 
-/*Converte um valor uint8_t (inteiro sem sinal de 8 bits) em uma string
+/*Converte um valor uint8_t (inteiro sem sinal de 8 bytes) em uma string
  * e a adiciona ao buffer. */
 void ufr_buffer_put_u8_as_str(ufr_buffer_t* buffer, uint8_t val) {
     if (!buffer) {
         fprintf (stderr,"Buffer invalido!");
         exit (1);
     } 
-    size_t max = buffer->ptr;
-
     
-    ufr_buffer_check_size(buffer, 8); /* Verifica se há espaço para 8 bits*/
+    // Verifica quantos bytes tem o valor de entrada.
+    size_t tam = (val > 99) ? 3 : (val > 9) ? 2 : 1;
+    ufr_buffer_check_size(buffer, tam); 
     char* base = &buffer->ptr[buffer->size];
-    size_t size = 0;
-
-    /*if (!base) {
-        fprintf (stderr, " Ponteiro invalido!");
-        exit (1);
-    }*/
+    size_t size;
 
     /* Se o buffer estiver vazio, o valor é adicionado sem espaço antes.
      * Caso contrário, um espaço é adicionado antes do valor.*/
