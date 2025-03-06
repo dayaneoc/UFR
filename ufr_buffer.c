@@ -35,6 +35,13 @@
 
 #include "ufr_buffer.h"
 
+/*
+void mostrar_u64(const char* filename, int line, uint64_t current, uint64_t expected) {
+    printf("Error:%s:%d: the value is %lu, but expected %lu\n", filename, line, current, expected ); 
+    exit(1);
+}
+*/
+
 // ============================================================================
 //  Buffer
 // ============================================================================
@@ -113,7 +120,7 @@ void ufr_buffer_check_size(ufr_buffer_t* buffer, size_t plus_size) {
         fprintf (stderr,"Buffer invalido!");
         exit (1);
     }
-    
+    //printf ("%d, %d, %d\n", buffer->size, plus_size , buffer->max);
     while (buffer->size + plus_size > buffer->max) {
         const size_t new_max = buffer->max * 2;
         char* new_ptr = realloc(buffer->ptr, new_max);
@@ -179,21 +186,19 @@ void ufr_buffer_put_u8_as_str(ufr_buffer_t* buffer, uint8_t val) {
         fprintf (stderr,"Buffer invalido!");
         exit (1);
     } 
-    
-    // Verifica quantos bytes tem o valor de entrada.
-    size_t tam = (val > 99) ? 4 : (val > 9) ? 3 : 2;
-    ufr_buffer_check_size(buffer, tam); // Redimensiona, caso necessário. 
+        
+    ufr_buffer_check_size(buffer, 5); // Redimensiona, caso necessário. 
     char* base = &buffer->ptr[buffer->size];
     size_t size;
 
     /* Se o buffer estiver vazio, o valor é adicionado sem espaço antes.
-     * Caso contrário, um espaço é adicionado antes do valor.*/
+    * Caso contrário, um espaço é adicionado antes do valor.*/
     if ( buffer->size == 0 ) {
         size = snprintf(base, 8, "%u", val);
     } else {
         size = snprintf(base, 8, " %u", val);
     }
-    buffer->size += size; 
+    buffer->size += size;  
 }
 
 /**
@@ -204,15 +209,20 @@ void ufr_buffer_put_u8_as_str(ufr_buffer_t* buffer, uint8_t val) {
  */
 
 /*Similar à função ufr_buffer_put_u8_as_str, mas para valores int8_t
- * (inteiro com sinal de 8 bits). */
+ * (inteiro com sinal de 8 bytes). */
 void ufr_buffer_put_i8_as_str(ufr_buffer_t* buffer, int8_t val) {
-    ufr_buffer_check_size(buffer, 8);
+    if (!buffer) {
+        fprintf (stderr, "Buffer invalido!");
+        exit (1);
+    }
+
+    ufr_buffer_check_size(buffer, 5);
     char* base = &buffer->ptr[buffer->size];
-    size_t size = 0;
+    size_t size;
     if ( buffer->size == 0 ) {
-        size = snprintf(base, 8, "%u", val);
+        size = snprintf(base, 8, "%d", val);
     } else {
-        size = snprintf(base, 8, " %u", val);
+        size = snprintf(base, 8, " %d", val);
     }
     buffer->size += size;
 }
@@ -227,7 +237,11 @@ void ufr_buffer_put_i8_as_str(ufr_buffer_t* buffer, int8_t val) {
 /*Converte um valor uint32_t (inteiro sem sinal de 32 bits) em uma string
  * e a adiciona ao buffer. */
 void ufr_buffer_put_u32_as_str(ufr_buffer_t* buffer, uint32_t val) {
-    ufr_buffer_check_size(buffer, 32);
+    if (!buffer) {
+        fprintf (stderr, "Buffer invalido!");
+        exit (1);
+    }
+    ufr_buffer_check_size(buffer, 10);
     char* base = &buffer->ptr[buffer->size];
     size_t size = 0;
     if ( buffer->size == 0 ) {

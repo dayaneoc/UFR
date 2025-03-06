@@ -35,6 +35,7 @@
 #include "assert.h"
 
 #define MAX_NUM 256
+
 // ============================================================================
 //  Tests
 // ============================================================================
@@ -137,7 +138,7 @@ void test_check_size () {
     // Adiciona dados ao buffer (menor que o tamanho inicial)
     const char* data1 = "ABCDE";
     ufr_buffer_put (buffer, data1, strlen(data1));
-    printf ("2) Adicionando dado < ou == ao tamanho max do buffer\n", data1);
+    printf ("2) Adicionando dado < ou == ao tamanho max do buffer\n");
     printf ("Dado: %s\n", data1);
     ufr_buffer_print (buffer);
     printf ("\n");
@@ -145,7 +146,7 @@ void test_check_size () {
     //Adiciona mais dados para testar redimesionamento.
     const char* data2 = "12345678910";
     ufr_buffer_put (buffer, data2, strlen(data2));
-    printf ("3) Adicionando dado maior que o tamanho max do buffer\n", data2);
+    printf ("3) Adicionando dado maior que o tamanho max do buffer\n");
     printf ("Dado: %s\n", data2);
     ufr_buffer_print (buffer);
     printf ("\n");
@@ -208,6 +209,7 @@ void test_buffer_put_u8_as_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
     
+    // Valores no intervalo 0 a 255.
     printf ("          Test_buffer_put_u8_as_str\n");
     UFR_TEST_EQUAL_U64 (buffer->size, 0);
     UFR_TEST_EQUAL_U64 (buffer->max, MESSAGE_ITEM_SIZE);
@@ -215,14 +217,26 @@ void test_buffer_put_u8_as_str () {
     ufr_buffer_print (buffer);
     printf ("\n");
     printf ("Inserindo valor...\n");
-    ufr_buffer_put_u8_as_str (buffer, 10);
+    ufr_buffer_put_u8_as_str (buffer, 13);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
+    //printf ("TAMANHO SIZE E DADO OK: Size: %zu, Dado: %s\n", buffer->size, buffer->ptr);
+    //printf ("\n");
+    ufr_buffer_put_u8_as_str (buffer, 255);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    //printf ("TAMANHO SIZE E DADO OK: Size: %zu, Dado: %s\n", buffer->size, buffer->ptr);
+    //printf ("\n");
     ufr_buffer_put_u8_as_str (buffer, 1);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
-    ufr_buffer_put_u8_as_str (buffer, 260);
+    //printf ("TAMANHO SIZE E DADO OK: Size: %zu, Dado: %s\n", buffer->size, buffer->ptr);
+    //printf ("\n");
+    ufr_buffer_put_u8_as_str (buffer, -37);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
-    ufr_buffer_put_u8_as_str (buffer, 37);
-    ufr_buffer_print (buffer);
+    //printf ("TAMANHO SIZE E DADO OK: Size: %zu, Dado: %s\n", buffer->size, buffer->ptr);
+    //printf ("\n");
     ufr_buffer_free (buffer);
 
     ufr_test_print_result ();
@@ -230,6 +244,80 @@ void test_buffer_put_u8_as_str () {
     printf ("\n");
 }
 
+void test_buffer_put_i8_as_str () {
+
+    ufr_buffer_t* buffer = ufr_buffer_new ();
+
+    // Valores no intervalo -128 a 127.
+    printf ("          Test_buffer_put_i8_as_str\n");
+    UFR_TEST_EQUAL_U64 (buffer->size, 0);
+    UFR_TEST_EQUAL_U64 (buffer->max, MESSAGE_ITEM_SIZE);
+    printf ("Estado inicial do buffer:\n");
+    ufr_buffer_print (buffer);
+    printf ("\n");
+    printf ("Inserindo valor...\n");
+    ufr_buffer_put_i8_as_str (buffer, -128);
+    printf ("%s\n", buffer->ptr);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    printf ("TAMANHO SIZE E DADO OK: Size: %zu, Dado: %s\n", buffer->size, buffer->ptr);
+    printf ("\n");
+    ufr_buffer_put_i8_as_str (buffer, -100);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    printf ("TAMANHO SIZE E DADO OK: Size: %zu, Dado: %s\n", buffer->size, buffer->ptr);
+    printf ("\n");
+    ufr_buffer_put_i8_as_str (buffer, 129);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    printf ("TAMANHO SIZE E DADO OK: Size: %zu, Dado: %s\n", buffer->size, buffer->ptr);
+    printf ("\n");
+    ufr_buffer_free (buffer);
+
+    ufr_test_print_result ();
+    printf ("------------------------------------------------------------------------------");
+    printf ("\n");
+}
+
+void test_buffer_put_u32_as_str () {
+
+    ufr_buffer_t* buffer = ufr_buffer_new ();
+
+    // Valores no intervalo 0 a 2³² - 1 (0 a 4.294.967.295).
+    printf ("          Test_buffer_put_i8_as_str\n");
+    UFR_TEST_EQUAL_U64 (buffer->size, 0);
+    UFR_TEST_EQUAL_U64 (buffer->max, MESSAGE_ITEM_SIZE);
+    printf ("Estado inicial do buffer:\n");
+    ufr_buffer_print (buffer);
+    printf ("\n");
+    printf ("Inserindo valor...\n");
+    ufr_buffer_put_u32_as_str (buffer, 1250);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    printf ("TAMANHO SIZE E DADO OK: Size: %zu, Dado: %s\n", buffer->size, buffer->ptr);
+    printf ("\n");
+    ufr_buffer_put_u32_as_str (buffer, 25);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    printf ("TAMANHO SIZE E DADO OK: Size: %zu, Dado: %s\n", buffer->size, buffer->ptr);
+    printf ("\n");
+    ufr_buffer_put_u32_as_str (buffer, -1);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    printf ("TAMANHO SIZE E DADO OK: Size: %zu, Dado: %s\n", buffer->size, buffer->ptr);
+    printf ("\n");
+    ufr_buffer_put_u32_as_str (buffer, 365);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    //printf ("DADO: %.*s\n", buffer->ptr);
+    printf ("TAMANHO SIZE E DADO OK: Size: %zu, Dado: %s\n", buffer->size, buffer->ptr);
+    printf ("\n");
+    ufr_buffer_free (buffer);
+
+    ufr_test_print_result ();
+    printf ("------------------------------------------------------------------------------");
+    printf ("\n");
+}
 /*void test_equal () {
     unsigned long valor = 5;
 
@@ -256,8 +344,9 @@ int main() {
     test_check_size     (); 
     test_buffer_put     ();
     test_buffer_put_chr ();
-    test_buffer_put_u8_as_str ();
-    
+    test_buffer_put_u8_as_str  ();
+    test_buffer_put_i8_as_str  ();
+    test_buffer_put_u32_as_str ();
     //test_equal();
     
     return 0;
