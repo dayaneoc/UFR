@@ -78,6 +78,7 @@ void test_buffer_new () {
     printf ("\n");                          
 }
 
+// Limpa buffer.
 void test_buffer_clear () {
    
     ufr_buffer_t* buffer = ufr_buffer_new ();
@@ -104,6 +105,7 @@ void test_buffer_clear () {
     printf ("\n");  
 }
 
+// Libera memória.
 void test_buffer_free () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
@@ -119,6 +121,7 @@ void test_buffer_free () {
     printf ("\n"); 
 }
 
+// Testa redimensionamento.
 void test_check_size () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
@@ -156,6 +159,7 @@ void test_check_size () {
     printf ("\n"); 
 }
 
+// Inserção de dados.
 void test_buffer_put () {
     
     ufr_buffer_t* buffer = ufr_buffer_new ();
@@ -181,6 +185,7 @@ void test_buffer_put () {
     printf ("\n"); 
 }
 
+// Inserção de caractere.
 void test_buffer_put_chr () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
@@ -207,6 +212,7 @@ void test_buffer_put_chr () {
     printf ("\n");
 }
 
+// Converte valor inteiro sem sinal de 8 bytes em uma string.
 void test_buffer_put_u8_as_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
@@ -241,6 +247,7 @@ void test_buffer_put_u8_as_str () {
     printf ("\n");
 }
 
+// Converte valor inteiro com sinal de 8 bytes em uma string.
 void test_buffer_put_i8_as_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
@@ -272,6 +279,7 @@ void test_buffer_put_i8_as_str () {
     printf ("\n");
 }
 
+// Converte valor inteiro sem sinal de 32 bytes em uma string.
 void test_buffer_put_u32_as_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();

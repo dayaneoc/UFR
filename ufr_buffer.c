@@ -234,20 +234,20 @@ void ufr_buffer_put_i8_as_str(ufr_buffer_t* buffer, int8_t val) {
  * @param val int value to be converted and inserted
  */
 
-/*Converte um valor uint32_t (inteiro sem sinal de 32 bits) em uma string
+/*Converte um valor uint32_t (inteiro sem sinal de 32 bytes) em uma string
  * e a adiciona ao buffer. */
 void ufr_buffer_put_u32_as_str(ufr_buffer_t* buffer, uint32_t val) {
     if (!buffer) {
         fprintf (stderr, "Buffer invalido!");
         exit (1);
     }
-    ufr_buffer_check_size(buffer, 10);
+    ufr_buffer_check_size(buffer, 12);
     char* base = &buffer->ptr[buffer->size];
     size_t size = 0;
     if ( buffer->size == 0 ) {
-        size = snprintf(base, 32, "%u", val);
+        size = snprintf(base, 12, "%u", val);
     } else {
-        size = snprintf(base, 32, " %u", val);
+        size = snprintf(base, 12, " %u", val);
     }
     buffer->size += size;
 }
@@ -260,7 +260,7 @@ void ufr_buffer_put_u32_as_str(ufr_buffer_t* buffer, uint32_t val) {
  */
 
 /* Similar à função ufr_buffer_put_u32_as_str, mas para valores int32_t 
- * (inteiro com sinal de 32 bits). */
+ * (inteiro com sinal de 32 bytes). */
 void ufr_buffer_put_i32_as_str(ufr_buffer_t* buffer, int32_t val) {
     ufr_buffer_check_size(buffer, 32);
     char* base = &buffer->ptr[buffer->size];
