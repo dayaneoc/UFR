@@ -300,10 +300,10 @@ void test_buffer_put_u32_as_str () {
     ufr_buffer_put_u32_as_str (buffer, 25);
     UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
-    ufr_buffer_put_u32_as_str (buffer, -1);
+    ufr_buffer_put_u32_as_str (buffer, 4294967296);
     UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
-    ufr_buffer_put_u32_as_str (buffer, 365);
+    ufr_buffer_put_u32_as_str (buffer, -1);
     UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
     ufr_buffer_free (buffer);
@@ -319,9 +319,35 @@ void test_buffer_put_i32_as_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
 
-    // Valores
+    // Valores no intervalo -2³¹ a 2³¹ - 1 (-2.147.483.648 a 2.147.483.647)
+    printf ("          Test_buffer_put_i32_as_str (-2³¹ a 2³¹ - 1 (-2.147.483.648 a 2.147.483.647))\n");
+    printf ("\n");
+    UFR_TEST_EQUAL_U64 (buffer->size, 0);
+    UFR_TEST_EQUAL_U64 (buffer->max, MESSAGE_ITEM_SIZE);
+    printf ("Estado inicial do buffer:\n");
+    ufr_buffer_print (buffer);
+    printf ("\n");
+    ufr_buffer_put_i32_as_str (buffer, -2147483649L);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    ufr_buffer_put_i32_as_str (buffer, -2147483648L);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    ufr_buffer_put_i32_as_str (buffer, 1350L);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    ufr_buffer_put_i32_as_str (buffer, 2147483648L);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    ufr_buffer_put_i32_as_str (buffer, 5000000000L);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    ufr_buffer_free (buffer);
+    printf ("\n");
 
-
+    ufr_test_print_result ();
+    printf ("------------------------------------------------------------------------------");
+    printf ("\n");
 }
 
 int main() {
@@ -336,7 +362,7 @@ int main() {
     test_buffer_put_u8_as_str  ();
     test_buffer_put_i8_as_str  ();
     test_buffer_put_u32_as_str ();
-    
+    test_buffer_put_i32_as_str ();
     
     return 0;
 }

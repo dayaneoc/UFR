@@ -238,13 +238,13 @@ void ufr_buffer_put_u32_as_str(ufr_buffer_t* buffer, uint32_t val) {
         fprintf (stderr, "Buffer invalido!");
         exit (1);
     }
-    ufr_buffer_check_size(buffer, 12);
+    ufr_buffer_check_size(buffer, 15);
     char* base = &buffer->ptr[buffer->size];
     size_t size = 0;
     if ( buffer->size == 0 ) {
-        size = snprintf(base, 12, "%u", val);
+        size = snprintf(base, 15, "%u", val);
     } else {
-        size = snprintf(base, 12, " %u", val);
+        size = snprintf(base, 15, " %u", val);
     }
     buffer->size += size;
 }
@@ -263,13 +263,13 @@ void ufr_buffer_put_i32_as_str(ufr_buffer_t* buffer, int32_t val) {
         fprintf (stderr, "Buffer invalido!");
         exit (1);
     }
-    ufr_buffer_check_size(buffer, 32);
+    ufr_buffer_check_size(buffer, 15);
     char* base = &buffer->ptr[buffer->size];
     size_t size = 0;
     if ( buffer->size == 0 ) {
-        size = snprintf(base, 32, "%d", val);
+        size = snprintf(base, 15, "%d", val);
     } else {
-        size = snprintf(base, 32, " %d", val);
+        size = snprintf(base, 15, " %d", val);
     }
     buffer->size += size;
 }
