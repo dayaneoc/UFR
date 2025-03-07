@@ -212,7 +212,7 @@ void test_buffer_put_chr () {
     printf ("\n");
 }
 
-// Converte valor inteiro sem sinal de 8 bytes em uma string.
+// Converte valor inteiro sem sinal de 8 bits em uma string.
 void test_buffer_put_u8_as_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
@@ -247,7 +247,7 @@ void test_buffer_put_u8_as_str () {
     printf ("\n");
 }
 
-// Converte valor inteiro com sinal de 8 bytes em uma string.
+// Converte valor inteiro com sinal de 8 bits em uma string.
 void test_buffer_put_i8_as_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
@@ -279,7 +279,7 @@ void test_buffer_put_i8_as_str () {
     printf ("\n");
 }
 
-// Converte valor inteiro sem sinal de 32 bytes em uma string.
+// Converte valor inteiro sem sinal de 32 bits em uma string.
 void test_buffer_put_u32_as_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
@@ -314,7 +314,15 @@ void test_buffer_put_u32_as_str () {
     printf ("\n");
 }
 
+// Converte valor inteiro com sinal de 32 bits.
+void test_buffer_put_i32_as_str () {
 
+    ufr_buffer_t* buffer = ufr_buffer_new ();
+
+    // Valores
+
+
+}
 
 int main() {
 

@@ -84,9 +84,9 @@ void ufr_buffer_init(ufr_buffer_t* buffer) {
 
 /* Libera a memória alocada para o buffer, se o ponteiro não for NULL. */
 void ufr_buffer_free(ufr_buffer_t* buffer) {
-    if (buffer == NULL) { 
-        printf ("Falha ao liberar memoria!");
-        return;
+    if (!buffer) {
+        fprintf (stderr,"Falha ao liberar memoria!");
+        exit (1);
     }
     free(buffer->ptr);
     buffer->ptr = NULL;
@@ -120,7 +120,6 @@ void ufr_buffer_check_size(ufr_buffer_t* buffer, size_t plus_size) {
         fprintf (stderr,"Buffer invalido!");
         exit (1);
     }
-    //printf ("%d, %d, %d\n", buffer->size, plus_size , buffer->max);
     while (buffer->size + plus_size > buffer->max) {
         const size_t new_max = buffer->max * 2;
         char* new_ptr = realloc(buffer->ptr, new_max);
@@ -179,15 +178,14 @@ void ufr_buffer_put_chr(ufr_buffer_t* buffer, char val) {
  * @param val unsigned int value to be converted and inserted
  */
 
-/*Converte um valor uint8_t (inteiro sem sinal de 8 bytes) em uma string
+/*Converte um valor uint8_t (inteiro sem sinal de 8 bits) em uma string
  * e a adiciona ao buffer. */
 void ufr_buffer_put_u8_as_str(ufr_buffer_t* buffer, uint8_t val) {
     if (!buffer) {
         fprintf (stderr,"Buffer invalido!");
         exit (1);
-    } 
-        
-    ufr_buffer_check_size(buffer, 5); // Redimensiona, caso necessário. 
+    }    
+    ufr_buffer_check_size(buffer, 5); 
     char* base = &buffer->ptr[buffer->size];
     size_t size;
 
@@ -209,13 +207,12 @@ void ufr_buffer_put_u8_as_str(ufr_buffer_t* buffer, uint8_t val) {
  */
 
 /*Similar à função ufr_buffer_put_u8_as_str, mas para valores int8_t
- * (inteiro com sinal de 8 bytes). */
+ * (inteiro com sinal de 8 bits). */
 void ufr_buffer_put_i8_as_str(ufr_buffer_t* buffer, int8_t val) {
     if (!buffer) {
         fprintf (stderr, "Buffer invalido!");
         exit (1);
     }
-
     ufr_buffer_check_size(buffer, 5);
     char* base = &buffer->ptr[buffer->size];
     size_t size;
@@ -234,7 +231,7 @@ void ufr_buffer_put_i8_as_str(ufr_buffer_t* buffer, int8_t val) {
  * @param val int value to be converted and inserted
  */
 
-/*Converte um valor uint32_t (inteiro sem sinal de 32 bytes) em uma string
+/*Converte um valor uint32_t (inteiro sem sinal de 32 bits) em uma string
  * e a adiciona ao buffer. */
 void ufr_buffer_put_u32_as_str(ufr_buffer_t* buffer, uint32_t val) {
     if (!buffer) {
@@ -260,8 +257,12 @@ void ufr_buffer_put_u32_as_str(ufr_buffer_t* buffer, uint32_t val) {
  */
 
 /* Similar à função ufr_buffer_put_u32_as_str, mas para valores int32_t 
- * (inteiro com sinal de 32 bytes). */
+ * (inteiro com sinal de 32 bits). */
 void ufr_buffer_put_i32_as_str(ufr_buffer_t* buffer, int32_t val) {
+    if (!buffer) {
+        fprintf (stderr, "Buffer invalido!");
+        exit (1);
+    }
     ufr_buffer_check_size(buffer, 32);
     char* base = &buffer->ptr[buffer->size];
     size_t size = 0;
@@ -284,6 +285,10 @@ void ufr_buffer_put_i32_as_str(ufr_buffer_t* buffer, int32_t val) {
  * Funciona de forma semelhante às funções anteriores, mas para valores
  * de ponto flutuante. */
 void ufr_buffer_put_f32_as_str(ufr_buffer_t* buffer, float val) {
+    if (!buffer) {
+        fprintf (stderr, "Buffer invalido!");
+        exit (1);
+    }
     ufr_buffer_check_size(buffer, 32);
     char* base = &buffer->ptr[buffer->size];
     size_t size = 0;
@@ -304,7 +309,11 @@ void ufr_buffer_put_f32_as_str(ufr_buffer_t* buffer, float val) {
 
 /* Adiciona uma string (text) ao buffer. */
 void ufr_buffer_put_str(ufr_buffer_t* buffer, const char* text) {
+    if (!buffer) {
+        fprintf (stderr, "Buffer invalido!");
+        exit (1);
+    }
     const size_t size = strlen(text); // Calcula o tamanho da string 
     ufr_buffer_check_size(buffer, size); // Verifica se há espaço suficiente no buffer 
-    ufr_buffer_put(buffer, text, size); // Adiciona a string usando
+    ufr_buffer_put(buffer, text, size); // Adiciona a string 
 }
