@@ -1,7 +1,7 @@
 # sudo apt install gcovr
 
-teste_exemplo: exemplo.c ufr_buffer.c ufr_buffer.h ufr_test.h
-	gcc exemplo.c ufr_buffer.c -o teste_exemplo --coverage
+teste_exemplo: ufr_test_buffer.c ufr_buffer.c ufr_buffer.h ufr_test.h
+	gcc ufr_test_buffer.c ufr_buffer.c -o teste_exemplo --coverage
 
 test: clean teste_exemplo
 	./teste_exemplo
