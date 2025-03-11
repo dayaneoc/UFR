@@ -291,7 +291,7 @@ void ufr_buffer_put_f32_as_str(ufr_buffer_t* buffer, float val) {
     }
     ufr_buffer_check_size(buffer, 32);
     char* base = &buffer->ptr[buffer->size];
-    size_t size = 0;
+    size_t size;
     if ( buffer->size == 0 ) {
         size = snprintf(base, 32, "%f", val);
     } else {

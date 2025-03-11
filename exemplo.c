@@ -268,7 +268,7 @@ void test_buffer_put_i8_as_str () {
     ufr_buffer_put_i8_as_str (buffer, -100);
     UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
-    ufr_buffer_put_i8_as_str (buffer, 129);
+    ufr_buffer_put_i8_as_str (buffer, 12.9);
     UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
     ufr_buffer_free (buffer);
@@ -300,7 +300,7 @@ void test_buffer_put_u32_as_str () {
     ufr_buffer_put_u32_as_str (buffer, 25);
     UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
-    ufr_buffer_put_u32_as_str (buffer, 4294967296);
+    ufr_buffer_put_u32_as_str (buffer, 4294967295);
     UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
     ufr_buffer_put_u32_as_str (buffer, -1);
@@ -314,7 +314,7 @@ void test_buffer_put_u32_as_str () {
     printf ("\n");
 }
 
-// Converte valor inteiro com sinal de 32 bits.
+// Converte valor inteiro com sinal de 32 bits em uma string.
 void test_buffer_put_i32_as_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
@@ -327,19 +327,19 @@ void test_buffer_put_i32_as_str () {
     printf ("Estado inicial do buffer:\n");
     ufr_buffer_print (buffer);
     printf ("\n");
-    ufr_buffer_put_i32_as_str (buffer, -2147483649L);
+    ufr_buffer_put_i32_as_str (buffer, -2147483600);
     UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
-    ufr_buffer_put_i32_as_str (buffer, -2147483648L);
+    ufr_buffer_put_i32_as_str (buffer, -2147483648);
     UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
-    ufr_buffer_put_i32_as_str (buffer, 1350L);
+    ufr_buffer_put_i32_as_str (buffer, 1350);
     UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
-    ufr_buffer_put_i32_as_str (buffer, 2147483648L);
+    ufr_buffer_put_i32_as_str (buffer, 2147483648);
     UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
-    ufr_buffer_put_i32_as_str (buffer, 5000000000L);
+    ufr_buffer_put_i32_as_str (buffer, 3000000000);
     UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
     ufr_buffer_free (buffer);
@@ -348,6 +348,40 @@ void test_buffer_put_i32_as_str () {
     ufr_test_print_result ();
     printf ("------------------------------------------------------------------------------");
     printf ("\n");
+}
+
+// Converte um valor de ponto flutuante de 32 bits em uma string.
+void test_buffer_put_f32_as_str () {
+
+    ufr_buffer_t* buffer = ufr_buffer_new ();
+
+    // Valores no intervalo 1.2E-38 a 3.4E+38 (6 digitos)
+    printf ("          Test_buffer_put_f32_as_str (1.2E-38 a 3.4E+38 (6 digitos))\n");
+    printf ("\n");
+    UFR_TEST_EQUAL_U64 (buffer->size, 0);
+    UFR_TEST_EQUAL_U64 (buffer->max, MESSAGE_ITEM_SIZE);
+    printf ("Estado inicial do buffer:\n");
+    ufr_buffer_print (buffer);
+    printf ("\n");
+    ufr_buffer_put_f32_as_str (buffer, 0.000000000000000000000000000000000000012);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    ufr_buffer_put_f32_as_str (buffer, 0);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    ufr_buffer_put_f32_as_str (buffer, 34.0000000000000000000000000000000000000);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    ufr_buffer_put_f32_as_str (buffer, -1.0123456);
+    UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    ufr_buffer_print (buffer);
+    ufr_buffer_free (buffer);
+    printf ("\n");
+
+    ufr_test_print_result ();
+    printf ("------------------------------------------------------------------------------");
+    printf ("\n");
+
 }
 
 int main() {
@@ -363,6 +397,7 @@ int main() {
     test_buffer_put_i8_as_str  ();
     test_buffer_put_u32_as_str ();
     test_buffer_put_i32_as_str ();
+    test_buffer_put_f32_as_str ();
     
     return 0;
 }
