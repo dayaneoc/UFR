@@ -387,6 +387,13 @@ void test_buffer_put_f32_as_str () {
 void test_buffer_put_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
+
+    ufr_buffer_free (buffer);
+    printf ("\n");
+    
+    ufr_test_print_result ();
+    printf ("------------------------------------------------------------------------------");
+    printf ("\n");
 }
 
 int main() {
