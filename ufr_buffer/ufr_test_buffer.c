@@ -384,13 +384,23 @@ void test_buffer_put_f32_as_str () {
 
 }
 
+// Adiciona uma string (text) ao buffer.
 void test_buffer_put_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
 
+    printf ("          Test_buffer_put_str\n");
+    printf ("\n");
+    UFR_TEST_EQUAL_U64 (buffer->size, 0);
+    printf ("Estado inicial do buffer:\n");
+    ufr_buffer_print (buffer);
+    printf ("\n");
+    ufr_buffer_put_str (buffer, "testando entrada");
+    ufr_buffer_print (buffer);
+
     ufr_buffer_free (buffer);
     printf ("\n");
-    
+
     ufr_test_print_result ();
     printf ("------------------------------------------------------------------------------");
     printf ("\n");
@@ -410,6 +420,7 @@ int main() {
     test_buffer_put_u32_as_str ();
     test_buffer_put_i32_as_str ();
     test_buffer_put_f32_as_str ();
+    test_buffer_put_str ();
     
     return 0;
 }
