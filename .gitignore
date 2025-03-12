@@ -1,4 +1,4 @@
-.gcda
-.gcno
-.html
-.css
+*.gcda
+*.gcno
+*.html
+*.css
