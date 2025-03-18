@@ -310,4 +310,25 @@ void ufr_buffer_put_str(ufr_buffer_t* buffer, const char* text) {
     const size_t size = strlen(text); // Calcula o tamanho da string 
     ufr_buffer_check_size(buffer, size); // Verifica se há espaço suficiente no buffer 
     ufr_buffer_put(buffer, text, size); // Adiciona a string 
+
+    /*char* tok;    
+    char temp_text [strlen(text) + 1];
+    char* base = &buffer->ptr[buffer->size];
+
+    strcpy (temp_text, text);
+    tok = strtok (temp_text, " ");
+    size_t delim;
+
+    if (buffer->size == 0) {
+        delim = snprintf (base, 32, "%s", text);
+    } else {
+        delim = snprintf (base, 32, " %s", text);
+        while (tok) {
+            printf (" %s", tok);
+            tok = strtok (NULL, " ");
+        }   
+    }*/
+    
+    
+    
 }

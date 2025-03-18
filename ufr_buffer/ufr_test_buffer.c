@@ -405,11 +405,12 @@ void test_buffer_put_str () {
     printf ("Estado inicial do buffer:\n");
     ufr_buffer_print (buffer);
     printf ("\n");
-    ufr_buffer_put_str (buffer, "testando entrada de string");
+    ufr_buffer_put_str (buffer, "teste 1");
+    //UFR_TEST_EQUAL_U64 (buffer->size, strlen(buffer->ptr));
     ufr_buffer_print (buffer);
     ufr_buffer_put_str (buffer, "teste 2");
     ufr_buffer_print (buffer);
-    ufr_buffer_put_str (buffer, "12345678");
+    ufr_buffer_put_str (buffer, "teste 3");
     ufr_buffer_print (buffer);
 
 
