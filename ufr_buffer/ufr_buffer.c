@@ -144,6 +144,17 @@ void ufr_buffer_put(ufr_buffer_t* buffer, const char* text, size_t size) {
     }*/
     ufr_buffer_check_size(buffer, size); //Verifica se há espaço suficiente no buffer
     memcpy(&buffer->ptr[buffer->size],  text, size); //Copia os dados para o buffer
+    
+    char* token;
+    char temp_text [strlen (text) + 1];
+    strcpy (temp_text, text);
+    token = strtok (temp_text, " ");
+    
+    while (token != NULL) {
+        while (token == " ") token++;
+        printf ("%s ", token);
+        token = strtok (NULL, " ");
+    }
     buffer->size += size; //atualiza o tamanho atual do buffer 
 }
 
@@ -311,24 +322,14 @@ void ufr_buffer_put_str(ufr_buffer_t* buffer, const char* text) {
     ufr_buffer_check_size(buffer, size); // Verifica se há espaço suficiente no buffer 
     ufr_buffer_put(buffer, text, size); // Adiciona a string 
 
-    /*char* tok;    
+    /*char* token;     
     char temp_text [strlen(text) + 1];
-    char* base = &buffer->ptr[buffer->size];
-
     strcpy (temp_text, text);
-    tok = strtok (temp_text, " ");
-    size_t delim;
+    token = strtok (temp_text, "\0");
 
-    if (buffer->size == 0) {
-        delim = snprintf (base, 32, "%s", text);
-    } else {
-        delim = snprintf (base, 32, " %s", text);
-        while (tok) {
-            printf (" %s", tok);
-            tok = strtok (NULL, " ");
-        }   
-    }*/
-    
-    
-    
+    while (token != NULL) {
+        while (*token == ' ') token++;
+        printf (" %s ", token);
+        token = strtok (NULL, "\0");
+    }*/    
 }
