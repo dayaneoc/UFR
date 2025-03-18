@@ -1,7 +1,7 @@
 # sudo apt install gcovr
 
 ufr_test_buffer: ufr_test_buffer.c ufr_buffer.c ufr_buffer.h ufr_test.h
-	gcc ufr_test_buffer.c ufr_buffer.c -o ufr_test_buffer --coverage
+	gcc ufr_test_buffer.c ufr_buffer.c -o ufr_test_buffer --coverage 
 
 test: clean ufr_test_buffer
 	./ufr_test_buffer

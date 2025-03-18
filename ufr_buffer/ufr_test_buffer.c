@@ -29,10 +29,8 @@
 // ============================================================================
 //  Header
 // ============================================================================
-
 #include "ufr_buffer.h"
 #include "ufr_test.h"
-#include "assert.h"
 
 // ============================================================================
 //  Tests
@@ -63,6 +61,7 @@ void test_buffer_init () {
     printf ("------------------------------------------------------------------------------");
     printf ("\n");                                                    
 }
+
 
 void test_buffer_new () {
     
@@ -110,6 +109,7 @@ void test_buffer_free () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
     
+    UFR_TEST_NOT_NULL (buffer);
     printf ("          Test_buffer_free\n");
     printf ("\n");
     ufr_buffer_free (buffer);
@@ -126,6 +126,7 @@ void test_check_size () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
     
+    UFR_TEST_NOT_NULL (buffer);
     printf ("          Test_check_size\n");
     printf ("\n");
     UFR_TEST_NOT_NULL (buffer);
@@ -164,6 +165,7 @@ void test_buffer_put () {
     
     ufr_buffer_t* buffer = ufr_buffer_new ();
     
+    UFR_TEST_NOT_NULL (buffer);
     printf ("          Test_buffer_put\n");
     printf ("\n");
     UFR_TEST_EQUAL_U64 (buffer->size, 0);
@@ -190,6 +192,7 @@ void test_buffer_put_chr () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
 
+    UFR_TEST_NOT_NULL (buffer);
     printf ("          Test_buffer_put_chr\n");
     printf ("\n");
     UFR_TEST_EQUAL_U64 (buffer->size, 0);
@@ -217,6 +220,7 @@ void test_buffer_put_u8_as_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
     
+    UFR_TEST_NOT_NULL (buffer);
     // Valores no intervalo 0 a 255.
     printf ("          Test_buffer_put_u8_as_str (0 a 255)\n");
     printf ("\n");
@@ -252,6 +256,7 @@ void test_buffer_put_i8_as_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
 
+    UFR_TEST_NOT_NULL (buffer);
     // Valores no intervalo -128 a 127.
     printf ("          Test_buffer_put_i8_as_str (-128 a 127)\n");
     printf ("\n");
@@ -284,6 +289,7 @@ void test_buffer_put_u32_as_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
 
+    UFR_TEST_NOT_NULL (buffer);
     // Valores no intervalo 0 a 2³² - 1 (0 a 4.294.967.295).
     printf ("          Test_buffer_put_u32_as_str (0 a 2³² - 1 (0 a 4.294.967.295))\n");
     printf ("\n");
@@ -319,6 +325,7 @@ void test_buffer_put_i32_as_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
 
+    UFR_TEST_NOT_NULL (buffer);
     // Valores no intervalo -2³¹ a 2³¹ - 1 (-2.147.483.648 a 2.147.483.647)
     printf ("          Test_buffer_put_i32_as_str (-2³¹ a 2³¹ - 1 (-2.147.483.648 a 2.147.483.647))\n");
     printf ("\n");
@@ -355,6 +362,7 @@ void test_buffer_put_f32_as_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
 
+    UFR_TEST_NOT_NULL (buffer);
     // Valores no intervalo 1.2E-38 a 3.4E+38 (6 digitos)
     printf ("          Test_buffer_put_f32_as_str (1.2E-38 a 3.4E+38 (6 digitos))\n");
     printf ("\n");
@@ -389,14 +397,21 @@ void test_buffer_put_str () {
 
     ufr_buffer_t* buffer = ufr_buffer_new ();
 
+    UFR_TEST_NOT_NULL (buffer);
     printf ("          Test_buffer_put_str\n");
     printf ("\n");
     UFR_TEST_EQUAL_U64 (buffer->size, 0);
+    UFR_TEST_EQUAL_U64 (buffer->max, MESSAGE_ITEM_SIZE);
     printf ("Estado inicial do buffer:\n");
     ufr_buffer_print (buffer);
     printf ("\n");
-    ufr_buffer_put_str (buffer, "testando entrada");
+    ufr_buffer_put_str (buffer, "testando entrada de string");
     ufr_buffer_print (buffer);
+    ufr_buffer_put_str (buffer, "teste 2");
+    ufr_buffer_print (buffer);
+    ufr_buffer_put_str (buffer, "12345678");
+    ufr_buffer_print (buffer);
+
 
     ufr_buffer_free (buffer);
     printf ("\n");

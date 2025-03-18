@@ -32,7 +32,8 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#define MESSAGE_ITEM_SIZE 10 /*4096L*/
+#define MESSAGE_ITEM_SIZE 10 //4096L
+
 
 typedef struct {
     size_t size;

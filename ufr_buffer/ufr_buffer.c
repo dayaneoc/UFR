@@ -30,17 +30,11 @@
 // ============================================================================
 
 #include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "ufr_buffer.h"
-
-/*
-void mostrar_u64(const char* filename, int line, uint64_t current, uint64_t expected) {
-    printf("Error:%s:%d: the value is %lu, but expected %lu\n", filename, line, current, expected ); 
-    exit(1);
-}
-*/
 
 // ============================================================================
 //  Buffer
@@ -54,11 +48,11 @@ void mostrar_u64(const char* filename, int line, uint64_t current, uint64_t expe
 
 /* Cria um novo buffer */
 ufr_buffer_t* ufr_buffer_new() {
-    ufr_buffer_t* buffer = malloc(sizeof(ufr_buffer_t));
+    ufr_buffer_t* buffer = malloc (sizeof(ufr_buffer_t));
     
-    if (buffer == NULL) { 
-        return;
-    } 
+    /*if (buffer == NULL) {
+        return NULL;
+    }*/
     ufr_buffer_init(buffer);
     return buffer;
 }
@@ -73,7 +67,7 @@ ufr_buffer_t* ufr_buffer_new() {
 void ufr_buffer_init(ufr_buffer_t* buffer) {
     buffer->size = 0;
     buffer->max = MESSAGE_ITEM_SIZE;
-    buffer->ptr = malloc(buffer->max);
+    buffer->ptr = malloc (buffer->max);
 }
 
 /**
@@ -84,11 +78,10 @@ void ufr_buffer_init(ufr_buffer_t* buffer) {
 
 /* Libera a memória alocada para o buffer, se o ponteiro não for NULL. */
 void ufr_buffer_free(ufr_buffer_t* buffer) {
-    buffer = NULL;
-    if (!buffer) {
+    /*if (!buffer) {
         fprintf (stderr,"Falha ao liberar memoria!");
-        return 0;
-    }
+        return;
+    }*/
     free(buffer->ptr);
     buffer->ptr = NULL;
     buffer->max = 0;
@@ -117,18 +110,18 @@ void ufr_buffer_clear(ufr_buffer_t* buffer) {
 /* Verifica se o buffer tem espaço suficiente para acomodar um incremento
  * de tamanho (plus_size). */
 void ufr_buffer_check_size(ufr_buffer_t* buffer, size_t plus_size) {
-    if (!buffer) {
+    /*if (!buffer) {
         fprintf (stderr,"Buffer invalido!");
         return;
-    }
+    }*/
     while (buffer->size + plus_size > buffer->max) {
         const size_t new_max = buffer->max * 2;
         char* new_ptr = realloc(buffer->ptr, new_max);
 
-        if (!new_ptr) {
+        /*if (!new_ptr) {
             fprintf (stderr,"Ponteiro invalido!");
         exit (1);
-        }
+        }*/
         buffer->max = new_max;
         buffer->ptr = new_ptr;
     }
@@ -145,12 +138,12 @@ void ufr_buffer_check_size(ufr_buffer_t* buffer, size_t plus_size) {
 
 /* Adiciona um bloco de dados ao buffer.*/
 void ufr_buffer_put(ufr_buffer_t* buffer, const char* text, size_t size) {
-    if (!buffer) {
+    /*if (!buffer) {
         fprintf (stderr,"Buffer invalido!");
         return;
-    }
+    }*/
     ufr_buffer_check_size(buffer, size); //Verifica se há espaço suficiente no buffer
-    memcpy(&buffer->ptr[buffer->size], text, size); //Copia os dados para o buffer
+    memcpy(&buffer->ptr[buffer->size],  text, size); //Copia os dados para o buffer
     buffer->size += size; //atualiza o tamanho atual do buffer 
 }
 
@@ -163,10 +156,10 @@ void ufr_buffer_put(ufr_buffer_t* buffer, const char* text, size_t size) {
 
 /* Adiciona um único caractere ao buffer. */
 void ufr_buffer_put_chr(ufr_buffer_t* buffer, char val) {
-    if (!buffer) {
+    /*if (!buffer) {
         fprintf (stderr,"Buffer invalido!");
         return;
-    }
+    }*/
     ufr_buffer_check_size(buffer, 1); 
     buffer->ptr[buffer->size] = val;
     buffer->size += 1; 
@@ -182,10 +175,10 @@ void ufr_buffer_put_chr(ufr_buffer_t* buffer, char val) {
 /*Converte um valor uint8_t (inteiro sem sinal de 8 bits) em uma string
  * e a adiciona ao buffer. */
 void ufr_buffer_put_u8_as_str(ufr_buffer_t* buffer, uint8_t val) {
-    if (!buffer) {
+    /*if (!buffer) {
         fprintf (stderr,"Buffer invalido!");
         return;
-    }    
+    }*/    
     ufr_buffer_check_size(buffer, 5); 
     char* base = &buffer->ptr[buffer->size];
     size_t size;
@@ -210,10 +203,10 @@ void ufr_buffer_put_u8_as_str(ufr_buffer_t* buffer, uint8_t val) {
 /*Similar à função ufr_buffer_put_u8_as_str, mas para valores int8_t
  * (inteiro com sinal de 8 bits). */
 void ufr_buffer_put_i8_as_str(ufr_buffer_t* buffer, int8_t val) {
-    if (!buffer) {
+    /*if (!buffer) {
         fprintf (stderr, "Buffer invalido!");
         return;
-    }
+    }*/
     ufr_buffer_check_size(buffer, 5);
     char* base = &buffer->ptr[buffer->size];
     size_t size;
@@ -235,10 +228,10 @@ void ufr_buffer_put_i8_as_str(ufr_buffer_t* buffer, int8_t val) {
 /*Converte um valor uint32_t (inteiro sem sinal de 32 bits) em uma string
  * e a adiciona ao buffer. */
 void ufr_buffer_put_u32_as_str(ufr_buffer_t* buffer, uint32_t val) {
-    if (!buffer) {
+    /*if (!buffer) {
         fprintf (stderr, "Buffer invalido!");
         return;
-    }
+    }*/
     ufr_buffer_check_size(buffer, 15);
     char* base = &buffer->ptr[buffer->size];
     size_t size = 0;
@@ -260,10 +253,10 @@ void ufr_buffer_put_u32_as_str(ufr_buffer_t* buffer, uint32_t val) {
 /* Similar à função ufr_buffer_put_u32_as_str, mas para valores int32_t 
  * (inteiro com sinal de 32 bits). */
 void ufr_buffer_put_i32_as_str(ufr_buffer_t* buffer, int32_t val) {
-    if (!buffer) {
+    /*if (!buffer) {
         fprintf (stderr, "Buffer invalido!");
         return;
-    }
+    }*/
     ufr_buffer_check_size(buffer, 15);
     char* base = &buffer->ptr[buffer->size];
     size_t size = 0;
@@ -286,10 +279,10 @@ void ufr_buffer_put_i32_as_str(ufr_buffer_t* buffer, int32_t val) {
  * Funciona de forma semelhante às funções anteriores, mas para valores
  * de ponto flutuante. */
 void ufr_buffer_put_f32_as_str(ufr_buffer_t* buffer, float val) {
-    if (!buffer) {
+    /*if (!buffer) {
         fprintf (stderr, "Buffer invalido!");
         return;
-    }
+    }*/
     ufr_buffer_check_size(buffer, 32);
     char* base = &buffer->ptr[buffer->size];
     size_t size;
@@ -310,10 +303,10 @@ void ufr_buffer_put_f32_as_str(ufr_buffer_t* buffer, float val) {
 
 /* Adiciona uma string (text) ao buffer. */
 void ufr_buffer_put_str(ufr_buffer_t* buffer, const char* text) {
-    if (!buffer) {
+    /*if (!buffer) {
         fprintf (stderr, "Buffer invalido!");
         return;
-    }
+    }*/
     const size_t size = strlen(text); // Calcula o tamanho da string 
     ufr_buffer_check_size(buffer, size); // Verifica se há espaço suficiente no buffer 
     ufr_buffer_put(buffer, text, size); // Adiciona a string 
