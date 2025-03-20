@@ -36,13 +36,13 @@
 //  Tests
 // ============================================================================
 
-// Imprimir estado do buffer.
+// Imprime estado do buffer.
 void ufr_buffer_print (ufr_buffer_t* buffer) {
 
     printf ("BUFFER: SIZE = %ld, MAX = %ld, DATA = %.*s\n", buffer->size, buffer->max, (int)buffer->size, buffer->ptr);
 }
 
-// Criar um novo buffer
+// Criar um novo buffer.
 void test_buffer_init () {
     
     printf ("Iniciando testes...\n");
@@ -50,9 +50,10 @@ void test_buffer_init () {
     printf ("\n");
 
     ufr_buffer_t buffer;
-    ufr_buffer_init (&buffer); // Inicializa o buffer
-    UFR_TEST_EQUAL_U64 ( buffer.size, 0 ); /* Verifica se o tamanho inicial do buffer é 0 */ 
-    UFR_TEST_EQUAL_U64 ( buffer.max, MESSAGE_ITEM_SIZE ); /* Verifica se a capacidade máxima do
+    ufr_buffer_init (&buffer); // Inicializa o buffer.
+    UFR_TEST_NOT_NULL (&buffer); /* Verifica se o ponteiro retornado não é NULL */
+    UFR_TEST_EQUAL_U64 (buffer.size, 0); /* Verifica se o tamanho inicial do buffer é 0 */ 
+    UFR_TEST_EQUAL_U64 (buffer.max, MESSAGE_ITEM_SIZE); /* Verifica se a capacidade máxima do
                                                            * buffer é igual a MESSAGE_ITEM_SIZE 
                                                            * (valor definido em ufr_buffer.h). */
     UFR_TEST_TRUE (&buffer); 
@@ -67,10 +68,11 @@ void test_buffer_init () {
 
 void test_buffer_new () {
     
-    ufr_buffer_t* buffer = ufr_buffer_new (); /* Cria um novo buffer dinamicamente*/
+    ufr_buffer_t* buffer = ufr_buffer_new (); /* Cria um novo buffer dinamicamente.*/
     
     UFR_TEST_NOT_NULL (buffer); /* Verifica se o ponteiro retornado não é NULL */
     printf ("Test_buffer_new OK\n");
+    
     ufr_buffer_free (buffer);
     UFR_TEST_ZERO (buffer->size);
     printf ("\n");
@@ -86,6 +88,9 @@ void test_buffer_clear () {
     ufr_buffer_t* buffer = ufr_buffer_new ();
     
     UFR_TEST_NOT_NULL (buffer);
+    UFR_TEST_EQUAL_U64 (buffer->size, 0);
+    UFR_TEST_EQUAL_U64 (buffer->max, MESSAGE_ITEM_SIZE);
+
     printf ("         Test_buffer_clear\n");
     printf ("\n");
     printf ("Estado inicial do buffer:\n");
@@ -104,6 +109,7 @@ void test_buffer_clear () {
     ufr_buffer_clear (buffer);
     printf ("Estado do buffer apos clear...\n");
     ufr_buffer_print (buffer);
+    
     ufr_buffer_free (buffer);
     UFR_TEST_ZERO (buffer->size); 
     printf ("\n");
@@ -119,6 +125,8 @@ void test_buffer_free () {
     ufr_buffer_t* buffer = ufr_buffer_new ();
     
     UFR_TEST_NOT_NULL (buffer);
+    UFR_TEST_EQUAL_U64 (buffer->size, 0);
+
     printf ("          Test_buffer_free\n");
     printf ("\n");
     ufr_buffer_free (buffer);
@@ -154,7 +162,7 @@ void test_check_size () {
     ufr_buffer_print (buffer);
     printf ("\n");
     
-    //Adiciona mais dados para testar redimesionamento.
+    //Adiciona mais dados para testar redimensionamento.
     const char* data2 = "12345678910";
     ufr_buffer_put (buffer, data2, strlen(data2));
     printf ("3) Adicionando mais dados p/ testar redimensionamento...\n");
@@ -483,8 +491,9 @@ void test_buffer_put_str () {
     UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
     ufr_buffer_print (buffer);
     
-    ufr_buffer_put_str (buffer, "teste 3");
+    ufr_buffer_put_str (buffer, "teste3 teste4 teste5 teste6 teste7 ");
     UFR_TEST_EQUAL_U64 (buffer->size, strlen (buffer->ptr));
+    //printf ("Valor do prt: %zu\n", buffer->size);
     ufr_buffer_print (buffer);
 
 
