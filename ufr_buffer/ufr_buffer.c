@@ -135,8 +135,8 @@ void ufr_buffer_check_size(ufr_buffer_t* buffer, size_t plus_size) {
         buffer->max = new_max;
         buffer->ptr = new_ptr;
     }
-}   
-    
+}
+
 /**
  * @brief Put text in the buffer
  * 
@@ -151,20 +151,15 @@ void ufr_buffer_put(ufr_buffer_t* buffer, const char* text, size_t size) {
         fprintf (stderr,"Buffer invalido!(put)\n");
         return;
     }
-    ufr_buffer_check_size(buffer, size); //Verifica se há espaço suficiente no buffer
-    //memcpy(&buffer->ptr[buffer->size], text, size);
-    
+
+    // Verifica se há espaço suficiente no buffer
+    ufr_buffer_check_size(buffer, size+1); 
+
+    // Copia os dados para o buffer
     char* base = &buffer->ptr[buffer->size];
-    if ( buffer->size == 0 ) {
-        size = snprintf(base, 32, "%s", text);
-    } else {
-        size = snprintf(base, 32, " %s", text);
-    }
+    strncpy(base, text, size);
     buffer->size += size; //atualiza o tamanho atual do buffer
-    
 }
-    
-    
 
 /**
  * @brief put a char in the buffer
@@ -329,6 +324,11 @@ void ufr_buffer_put_str(ufr_buffer_t* buffer, const char* text) {
         return;
     }
     const size_t size = strlen(text); // Calcula o tamanho da string 
-    ufr_buffer_check_size(buffer, size); // Verifica se há espaço suficiente no buffer 
-    ufr_buffer_put(buffer, text, size); // Adiciona a string 
+    ufr_buffer_check_size(buffer, size); // Verifica se há espaço suficiente no buffer
+    if ( buffer->size == 0 ) {
+        ufr_buffer_put(buffer, text, size); // Adiciona a string 
+    } else {
+        ufr_buffer_put(buffer, " ", 1);
+        ufr_buffer_put(buffer, text, size); // Adiciona a string 
+    }
 }
