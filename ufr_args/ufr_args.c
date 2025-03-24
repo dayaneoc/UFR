@@ -43,7 +43,21 @@ void* ufr_linux_load_library(const char* type, const char* name, const char* cla
 // ============================================================================
 //  UFR ARGS
 // ============================================================================
-
+/**
+ * @brief Retorna a proxima palavra (token) na frase apontada por text e 
+ * cursor_ini. 
+ * 
+ * @param[in] text  texto a ser quebrado em diferentes palavras. 
+ *          Exemplo "token1 token2 token3"
+ * @param[inout] cursor_ini numero inteiro do cursor da frase. Ao final da funcao a 
+ *          posicao do cursor é atualizada
+ * @param[out] token palavra
+ * @param[in] token_max tamanho maximo da palavra
+ * @param[in] div caracter que serve como divisor das palavras
+ *
+ * @return true existe uma palavra válida no token
+ * @return false não existe uma palavra válida no token, fim da frase
+ */
 bool ufr_args_flex_div(const char* text, uint16_t* cursor_ini, char* token, const uint16_t token_max, const char div) {
     uint8_t state = 0;
     uint16_t i_token = 0;
@@ -100,17 +114,41 @@ bool ufr_args_flex_div(const char* text, uint16_t* cursor_ini, char* token, cons
     return (i_token > 0);
 }
 
-// static
+/**
+ * @brief Retorna a proxima palavra (token) na frase apontada por text e 
+ * cursor_ini. Usa o espaço ' ' como divisor padrão
+ * 
+ * @param[in] text  texto a ser quebrado em diferentes palavras. 
+ *          Exemplo "token1 token2 token3"
+ * @param[inout] cursor_ini numero inteiro do cursor da frase. Ao final da funcao a 
+ *          posicao do cursor é atualizada
+ * @param[out] token palavra
+ * @param[in] token_max tamanho maximo da palavra
+  *
+ * @return true existe uma palavra válida no token
+ * @return false não existe uma palavra válida no token, fim da frase
+ */
 bool ufr_args_flex(const char* text, uint16_t* cursor_ini, char* token, const uint16_t token_max) {
     return ufr_args_flex_div(text, cursor_ini, token, token_max, ' ');
 }
 
-size_t ufr_args_getu(const ufr_args_t* args, const char* noun, const size_t default_value) {
+/**
+ * @brief retorna um número positivo do argumento indicado por name
+ *   ex1: ufr_args_getu({.text="@nome teste @pontos 10"}, "@pontos", 0) -> 10
+ *   ex2: ufr_args_getu({.text="@nome teste @pontos %d", .arg[0].i32=20}, "@pontos", 0) -> 20
+ *   ex3: ufr_args_getu({.text="@nome teste"}, "@pontos", 0) -> 0
+ * 
+ * @param[in] args estrutura de argumentos variaveis
+ * @param[in] name nome do argumento
+ * @param[in] default_value valor padrão do argumento, caso ela não esteja na frase
+ * @return size_t valor do argumento
+ */
+size_t ufr_args_getu(const ufr_args_t* args, const char* name, const size_t default_value) {
     char token[512];
     uint8_t  count_arg = 0;
     uint16_t cursor = 0;
     while( ufr_args_flex(args->text, &cursor, token, sizeof(token)) ) {
-        // jump case word is not noun
+        // jump case word is not name
         if ( token[0] != '@' ) {
             if ( token[0] == '%' ) {
                 count_arg += 1;
@@ -118,8 +156,8 @@ size_t ufr_args_getu(const ufr_args_t* args, const char* noun, const size_t defa
             continue;
         }
 
-        // check if the noun is correct
-        if ( strcmp(noun, token) == 0 ) {
+        // check if the name is correct
+        if ( strcmp(name, token) == 0 ) {
             ufr_args_flex(args->text, &cursor, token, sizeof(token));
             if ( token[0] == '%' ) {
                 if ( token[1] == 'd' ) {
@@ -139,12 +177,23 @@ size_t ufr_args_getu(const ufr_args_t* args, const char* noun, const size_t defa
     return default_value;
 }
 
-int ufr_args_geti(const ufr_args_t* args, const char* noun, const int default_value) {
+/**
+ * @brief retorna um número positivo do argumento indicado por name
+ *   ex1: ufr_args_getu({.text="@nome teste @pontos 10"}, "@pontos", 0) -> 10
+ *   ex2: ufr_args_getu({.text="@nome teste @pontos %d", .arg[0].i32=20}, "@pontos", 0) -> 20
+ *   ex3: ufr_args_getu({.text="@nome teste"}, "@pontos", 0) -> 0
+ * 
+ * @param[in] args estrutura de argumentos variaveis
+ * @param[in] name nome do argumento
+ * @param[in] default_value valor padrão do argumento, caso ela não esteja na frase
+ * @return size_t valor do argumento
+ */
+int ufr_args_geti(const ufr_args_t* args, const char* name, const int default_value) {
     char token[512];
     uint8_t  count_arg = 0;
     uint16_t cursor = 0;
     while( ufr_args_flex(args->text, &cursor, token, sizeof(token)) ) {
-        // jump case word is not noun
+        // jump case word is not name
         if ( token[0] != '@' ) {
             if ( token[0] == '%' ) {
                 count_arg += 1;
@@ -152,8 +201,8 @@ int ufr_args_geti(const ufr_args_t* args, const char* noun, const int default_va
             continue;
         }
 
-        // check if the noun is correct
-        if ( strcmp(noun, token) == 0 ) {
+        // check if the name is correct
+        if ( strcmp(name, token) == 0 ) {
             ufr_args_flex(args->text, &cursor, token, sizeof(token));
             if ( token[0] == '%' ) {
                 if ( token[1] == 'd' ) {
@@ -173,12 +222,23 @@ int ufr_args_geti(const ufr_args_t* args, const char* noun, const int default_va
     return default_value;
 }
 
-float ufr_args_getf(const ufr_args_t* args, const char* noun, const float default_value) {
+/**
+ * @brief retorna um ponto flutuante do argumento indicado por name
+ *   ex1: ufr_args_getu({.text="@nome teste @pontos 10.5"}, "@pontos", 0) -> 10.5
+ *   ex2: ufr_args_getu({.text="@nome teste @pontos %d", .arg[0].i32=20.5}, "@pontos", 0) -> 20.5
+ *   ex3: ufr_args_getu({.text="@nome teste"}, "@pontos", 0.0) -> 0.0
+ * 
+ * @param[in] args estrutura de argumentos variaveis
+ * @param[in] name nome do argumento
+ * @param[in] default_value valor padrão do argumento, caso ela não esteja na frase
+ * @return size_t valor do argumento
+ */
+float ufr_args_getf(const ufr_args_t* args, const char* name, const float default_value) {
     char token[512];
     uint8_t  count_arg = 0;
     uint16_t cursor = 0;
     while( ufr_args_flex(args->text, &cursor, token, sizeof(token)) ) {
-        // jump case word is not noun
+        // jump case word is not name
         if ( token[0] != '@' ) {
             if ( token[0] == '%' ) {
                 count_arg += 1;
@@ -186,8 +246,8 @@ float ufr_args_getf(const ufr_args_t* args, const char* noun, const float defaul
             continue;
         }
 
-        // check if the noun is correct
-        if ( strcmp(noun, token) == 0 ) {
+        // check if the name is correct
+        if ( strcmp(name, token) == 0 ) {
             ufr_args_flex(args->text, &cursor, token, sizeof(token));
             if ( token[0] == '%' ) {
                 if ( token[1] == 'd' ) {
@@ -207,12 +267,22 @@ float ufr_args_getf(const ufr_args_t* args, const char* noun, const float defaul
     return default_value;
 }
 
-const void* ufr_args_getp(const ufr_args_t* args, const char* noun, const void* default_value) {
+/**
+ * @brief retorna um ponteiro do argumento indicado por name
+ *   ex1: ufr_args_getp({.text="@nome teste @pontos %p", .arg[0].i32=0x1000}, "@pontos", NULL) -> 0x1000
+ *   ex2: ufr_args_getp({.text="@nome teste"}, "@pontos", NULL) -> NULL
+ * 
+ * @param[in] args estrutura de argumentos variaveis
+ * @param[in] name nome do argumento
+ * @param[in] default_value valor padrão do argumento, caso ela não esteja na frase
+ * @return size_t valor do argumento
+ */
+const void* ufr_args_getp(const ufr_args_t* args, const char* name, const void* default_value) {
     char token[512];
     uint8_t  count_arg = 0;
     uint16_t cursor = 0;
     while( ufr_args_flex(args->text, &cursor, token, sizeof(token)) ) {
-        // jump case word is not noun
+        // jump case word is not name
         if ( token[0] != '@' ) {
             if ( token[0] == '%' ) {
                 count_arg += 1;
@@ -220,8 +290,8 @@ const void* ufr_args_getp(const ufr_args_t* args, const char* noun, const void* 
             continue;
         }
 
-        // check if the noun is correct
-        if ( strcmp(noun, token) == 0 ) {
+        // check if the name is correct
+        if ( strcmp(name, token) == 0 ) {
             ufr_args_flex(args->text, &cursor, token, sizeof(token));
             if ( token[0] == '%' ) {
                 if ( token[1] == 'p' ) {
@@ -237,12 +307,24 @@ const void* ufr_args_getp(const ufr_args_t* args, const char* noun, const void* 
     return default_value;
 }
 
-const char* ufr_args_gets(const ufr_args_t* args, char* buffer, const char* noun, const char* default_value) {
+/**
+ * @brief retorna uma string com o valor do argumento indicado por name
+ *   ex1: ufr_args_getu({.text="@nome teste @pontos 10.5"}, "@pontos", 0) -> 10.5
+ *   ex2: ufr_args_getu({.text="@nome teste @pontos %d", .arg[0].i32=20.5}, "@pontos", 0) -> 20.5
+ *   ex3: ufr_args_getu({.text="@nome teste"}, "@pontos", 0.0) -> 0.0
+ * 
+ * @param[in] args estrutura de argumentos variaveis
+ * @param[inout] buffer local de memoria para guardar a string do text
+ * @param[in] name nome do argumento
+ * @param[in] default_value valor padrão do argumento, caso ela não esteja no text
+ * @return const char* ponteiro para a string do valor do argumento
+ */
+const char* ufr_args_gets(const ufr_args_t* args, char* buffer, const char* name, const char* default_value) {
     char token[UFR_ARGS_TOKEN];
     uint8_t  count_arg = 0;
     uint16_t cursor = 0;
     while( ufr_args_flex(args->text, &cursor, token, sizeof(token)) ) {
-        // jump case word is not noun
+        // jump case word is not name
         if ( token[0] != '@' ) {
             if ( token[0] == '%' ) {
                 count_arg += 1;
@@ -250,8 +332,8 @@ const char* ufr_args_gets(const ufr_args_t* args, char* buffer, const char* noun
             continue;
         }
 
-        // check if the noun is correct
-        if ( strcmp(noun, token) == 0 ) {
+        // check if the name is correct
+        if ( strcmp(name, token) == 0 ) {
             ufr_args_flex(args->text, &cursor, token, sizeof(token));
             if ( token[0] == '%' ) {
                 if ( token[1] == 's' ) {
@@ -270,12 +352,22 @@ const char* ufr_args_gets(const ufr_args_t* args, char* buffer, const char* noun
     return default_value;
 }
 
-void* ufr_args_getfunc(const ufr_args_t* args, const char* type, const char* noun, void* default_value) {
+/**
+ * @brief retorna um ponteiro do argumento indicado por name
+ *   ex1: ufr_args_getp({.text="@nome teste @pontos %p", .arg[0].i32=0x1000}, "@pontos", NULL) -> 0x1000
+ *   ex2: ufr_args_getp({.text="@nome teste"}, "@pontos", NULL) -> NULL
+ * 
+ * @param[in] args estrutura de argumentos variaveis
+ * @param[in] name nome do argumento
+ * @param[in] default_value valor padrão do argumento, caso ela não esteja na frase
+ * @return size_t valor do argumento
+ */
+void* ufr_args_getfunc(const ufr_args_t* args, const char* type, const char* name, void* default_value) {
     char token[512];
     uint8_t  count_arg = 0;
     uint16_t cursor = 0;
     while( ufr_args_flex(args->text, &cursor, token, sizeof(token)) ) {
-        // jump case word is not noun
+        // jump case word is not name
         if ( token[0] != '@' ) {
             if ( token[0] == '%' ) {
                 count_arg += 1;
@@ -283,8 +375,8 @@ void* ufr_args_getfunc(const ufr_args_t* args, const char* type, const char* nou
             continue;
         }
 
-        // check if the noun is correct
-        if ( strcmp(noun, token) == 0 ) {
+        // check if the name is correct
+        if ( strcmp(name, token) == 0 ) {
             ufr_args_flex(args->text, &cursor, token, sizeof(token));
             if ( token[0] == '%' ) {
                 if ( token[1] == 'p' ) {
@@ -314,6 +406,13 @@ void* ufr_args_getfunc(const ufr_args_t* args, const char* type, const char* nou
     return default_value;
 }
 
+/**
+ * @brief converte os valores de uma lista de va_list para ufr_args
+ * @param[out] args estrutura de argumentos variaveis
+ * @param[in] name nome do argumento
+ * @param[in] default_value valor padrão do argumento, caso ela não esteja na frase
+ * @return size_t valor do argumento
+ */
 void ufr_args_load_from_va(ufr_args_t* args, const char* text, va_list list) {
     char token[512];
     uint8_t  count_arg = 0;
@@ -332,8 +431,14 @@ void ufr_args_load_from_va(ufr_args_t* args, const char* text, va_list list) {
     args->text = text;
 }
 
-// Mover essa funcao para UFR
-// @new aaa @param1 bbb @@new ccc @@param1 ddd -> @new ccc @param1 ddd
+/**
+ * @brief Diminui o nivel das variaveis de um texto
+ *   ex1: "@new teste @path file @@new opencv @@id 0" -> "@new opencv @id 0"
+ * 
+ * @param[in] src texto dos argumentos variaveis
+ * @param[out] dst texto com somente os argumentos de nivel superior
+ * @return int 0 -> OK
+ */
 int ufr_args_decrease_level(const char* src, char* dst) {
     dst[0] = '\0';
     char token[512];
