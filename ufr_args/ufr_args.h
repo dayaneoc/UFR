@@ -32,6 +32,8 @@
 #pragma once
 
 #include <stdint.h>
+#include <stddef.h>
+#include <stdarg.h>
 
 struct _link;
 #define UFR_OK 0
@@ -68,6 +70,7 @@ typedef struct {
 size_t ufr_args_getu(const ufr_args_t* args, const char* noun, const size_t default_value);
 int    ufr_args_geti(const ufr_args_t* args, const char* noun, const int default_value);
 float  ufr_args_getf(const ufr_args_t* args, const char* noun, const float default_value);
+
 const void* ufr_args_getp(const ufr_args_t* args, const char* noun, const void* default_value);
 const char* ufr_args_gets(const ufr_args_t* args, char* buffer, const char* noun, const char* default_value);
 

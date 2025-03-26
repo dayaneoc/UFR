@@ -34,7 +34,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
-#include <stdarg.h>
+
+
 
 #include "ufr_args.h"
 
@@ -81,10 +82,9 @@ bool ufr_args_flex_div(const char* text, uint16_t* cursor_ini, char* token, cons
         
             if ( c == '\'') {
                 state = 1;
-
             } else if ( c == div ) {
                 if ( i_token > 0 ) {
-                    token[i_token] = '\0';
+                    token[i_token] = '\0'; //     @nome     felipe    
                     break;
                 }
 
@@ -134,8 +134,8 @@ bool ufr_args_flex(const char* text, uint16_t* cursor_ini, char* token, const ui
 
 /**
  * @brief retorna um número positivo do argumento indicado por name
- *   ex1: ufr_args_getu({.text="@nome teste @pontos 10"}, "@pontos", 0) -> 10
- *   ex2: ufr_args_getu({.text="@nome teste @pontos %d", .arg[0].i32=20}, "@pontos", 0) -> 20
+ *   ex1: ufr_args_getu({.text="@nome 'teste jjj hhh   ggggg' @pontos 10"}, "@pontos", 0) -> 10
+ *   ex2: ufr_args_getu({.text="@nome    teste    @pontos %d", .arg[0].i32=20}, "@pontos", 0) -> 20
  *   ex3: ufr_args_getu({.text="@nome teste"}, "@pontos", 0) -> 0
  * 
  * @param[in] args estrutura de argumentos variaveis
