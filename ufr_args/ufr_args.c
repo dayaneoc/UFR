@@ -67,51 +67,51 @@ bool ufr_args_flex_div(const char* text, uint16_t* cursor_ini, char* token, cons
     while (1) {
         const char c = text[i_text];
         if ( c == '\0' ) {
-            token[i_token] = '\0';
+            token[i_token] = '\0'; // finaliza token
             break;
         }
         
         // ignore caracter
         if ( c == '\n' ) {
-            i_text += 1;
-            continue;
+            i_text += 1;   // avança para o próximo caractere
+            continue;      // volta ao inicio do loop
         }
 
         // standard state
-        if ( state == 0 ) {
+        if ( state == 0 ) {  // estado 0 (fora de aspas)
         
-            if ( c == '\'') {
+            if ( c == '\'') {  // se encontrar aspas simples, muda para estado 1
                 state = 1;
-            } else if ( c == div ) {
-                if ( i_token > 0 ) {
-                    token[i_token] = '\0'; //     @nome     felipe    
+            } else if ( c == div ) {  // se encontrar delimitador div
+                if ( i_token > 0 ) {  // se já tiver conteúdo no token, finaliza token
+                    token[i_token] = '\0'; 
                     break;
                 }
 
-            } else {
+            } else { // caso contrário, ignora delimitador
                 if ( i_token < token_max-1 ) {
                     token[i_token] = c;
-                    i_token += 1;
+                    i_token += 1; // para outros caracteres, adiciona ao token(se houver espaço)
                 }
             }
 
         // inside quotes, example: 'text'
-        } else if ( state == 1 ) {
-            if ( c == '\'') {
+        } else if ( state == 1 ) { // estado 1 (dentro de aspas)
+            if ( c == '\'') {  // se encontrar aspas simples, volta p/ estado 0
                 state = 0;
             } else {
                 if ( i_token < token_max-1 ) {
                     token[i_token] = c;
-                    i_token += 1;
+                    i_token += 1; // para outros caracteres, adiciona ao token
                 }
             }
         }
 
-        i_text += 1;
+        i_text += 1; // avança p/ próximo caractere
     }
 
-    *cursor_ini = i_text;
-    return (i_token > 0);
+    *cursor_ini = i_text; // atualiza a posição do cursor
+    return (i_token > 0); // retorna true se um token foi extraído
 }
 
 /**

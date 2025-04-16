@@ -40,17 +40,94 @@
 
 void test_ufr_args_flex_div () {
 
-    const char* text = "comando 10 20 'Teste longo'";
-    //char div = ' ';
-    uint16_t cursor = 0;
-    char token[50];
+    printf ("==========Iniciando testes p/ ufr_args_flex_div==========\n");
+    printf ("\n");
+   
+    // Teste 1: Delimitador aspas simples
+    {
+        const char* text = "testar string 10 20 'Teste dentro de aspas'";
+        uint16_t cursor = 0;
+        char token[50];
 
-    printf (" Testa frase de entrada: \"%s\"\n", text);
-    printf ("Tokens: \n");
+        printf ("          Teste 1 - delimitador aspas simples\n\n");
+        printf ("Testa frase de entrada: \"%s\"\n", text);
+        printf ("Tokens: \n");
 
-    while (ufr_args_flex_div (text, &cursor, token, 50, ' ')) {
-        printf (" - \"%s\"\n", token);
+        while (ufr_args_flex_div (text, &cursor, token, 50, ' ')) {
+            printf (" - \"%s\"\n", token);
+        }
+        UFR_TEST_EQUAL_STR (text, "testar string 10 20 'Teste dentro de aspas'");
+        printf ("\n");
+
+        ufr_test_print_result ();
+        printf ("------------------------------------------------------------------------------");
+        printf ("\n"); 
     }
+
+    // Teste 2: String vazia
+    {
+        const char* text = " ";
+        uint16_t cursor  = 0;
+        char token[50];
+
+        printf ("            Teste 2 - String vazia\n\n");
+        printf ("Teste frase de entrada: \"%s\"\n", text);
+        printf ("Tokens: \n");
+
+        if (ufr_args_flex_div(text, &cursor, token, 50, ' ')) {
+            printf (" Erro! Era esperado nenhum token, mas obteve: %s\n", token);
+        } else {
+            printf ("Teste 2 passou (nenhum token retornado)");
+            printf ("\n");
+        }
+        UFR_TEST_EQUAL_STR (text, " ");
+        printf ("\n");
+
+        ufr_test_print_result ();
+        printf ("------------------------------------------------------------------------------");
+        printf ("\n"); 
+
+    }
+
+    // Teste 3: Delimitador diferente (vírgula)
+    {
+        const char* text = "Entrada, 125, ' ',Ok";
+        uint16_t cursor  = 0;
+        char token[50];
+
+        printf ("            Teste 3 - Delimitador vírgula\n\n");
+        printf (" Teste frase de entrada: \"%s\"\n", text);
+        printf ("Tokens: \n");
+
+        while (ufr_args_flex_div (text, &cursor, token, 50, ',' )) {
+            printf (" - \"%s\"\n", token);
+
+        }
+        UFR_TEST_EQUAL_STR (text, "Entrada, 125, ' ',Ok" );
+        printf ("\n");
+
+        ufr_test_print_result ();
+        printf ("------------------------------------------------------------------------------");
+        printf ("\n"); 
+    }
+
+    // Teste 4: Aspas não fechadas
+    {
+        const char* text = " A 'B Teste sem fechar aspas";
+        uint16_t cursor  = 0;
+        char token[50];
+
+        printf ("            Teste 4 - Aspas não fechadas\n\n");
+        printf ("Teste frase de entrada: \"%s\"\n", text);
+        printf ("Tokens\n");
+
+        while (ufr_args_flex_div (text, &cursor, token, 50, '\'' )) {
+            printf (" - \"%s\"\n", token);
+        }
+
+    }
+
+
     printf ("\n");
 }
 
