@@ -187,8 +187,36 @@ void test_ufr_args_flex_div () {
         UFR_TEST_EQUAL_STR (token, "2" );
         UFR_TEST_EQUAL (cursor, 7);
         printf ("%s\n", token);
-      
+        
+        const bool res3 = ufr_args_flex_div (text, &cursor, token, 5, ',');
+        UFR_TEST_TRUE (res3);
+        UFR_TEST_EQUAL_STR (token, "3");
+        UFR_TEST_EQUAL (cursor, 9);
+        printf ("%s\n", token);
        
+        const bool res4 = ufr_args_flex_div (text, &cursor, token, 5, ',');
+        UFR_TEST_TRUE (res4);
+        UFR_TEST_EQUAL_STR (token, "4");
+        UFR_TEST_EQUAL (cursor, 11);
+        printf ("%s\n", token);
+
+        const bool res5 = ufr_args_flex_div (text, &cursor, token, 5, ',');
+        UFR_TEST_TRUE (res5);
+        UFR_TEST_EQUAL_STR (token, "5");
+        UFR_TEST_EQUAL (cursor, 13);
+        printf ("%s\n", token);
+
+        const bool res6 = ufr_args_flex_div (text, &cursor, token, 5, ',');
+        UFR_TEST_TRUE (res6);
+        UFR_TEST_EQUAL_STR (token, "6");
+        UFR_TEST_EQUAL (cursor, 15);
+        printf ("%s\n", token);
+
+        const bool res7 = ufr_args_flex_div (text, &cursor, token, 5, ',');
+        UFR_TEST_TRUE (res7);
+        UFR_TEST_EQUAL_STR (token, "7");
+        UFR_TEST_EQUAL (cursor, 17);
+        printf ("%s\n", token);
 
 
     }
