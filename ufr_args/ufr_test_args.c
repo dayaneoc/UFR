@@ -49,6 +49,8 @@ void test_ufr_args_flex_div () {
         uint16_t cursor = 0;
         char token[50];
 
+        UFR_TEST_NOT_NULL (token);
+
         printf ("          Teste 1 - delimitador aspas simples\n\n");
         printf ("Testa frase de entrada: \"%s\"\n", text);
         printf ("Tokens: \n");
@@ -69,6 +71,8 @@ void test_ufr_args_flex_div () {
         const char* text = " ";
         uint16_t cursor  = 0;
         char token[50];
+
+        UFR_TEST_NOT_NULL (token);
 
         printf ("            Teste 2 - String vazia\n\n");
         printf ("Teste frase de entrada: \"%s\"\n", text);
@@ -95,6 +99,9 @@ void test_ufr_args_flex_div () {
         uint16_t cursor  = 0;
         char token[50];
 
+        UFR_TEST_NOT_NULL (token);
+        
+
         printf ("            Teste 3 - Delimitador vírgula\n\n");
         printf (" Teste frase de entrada: \"%s\"\n", text);
         printf ("Tokens: \n");
@@ -117,13 +124,72 @@ void test_ufr_args_flex_div () {
         uint16_t cursor  = 0;
         char token[50];
 
+        UFR_TEST_NOT_NULL (token);
+
         printf ("            Teste 4 - Aspas não fechadas\n\n");
         printf ("Teste frase de entrada: \"%s\"\n", text);
         printf ("Tokens\n");
 
+
+        bool res1 = ufr_args_flex_div (text, &cursor, token, 50, ' ' );
+        UFR_TEST_TRUE (res1);
+        UFR_TEST_EQUAL_STR (token, "A" );
+        UFR_TEST_EQUAL (cursor, 2);
+        printf ("%s\n", token);
+
+        bool res2 = ufr_args_flex_div (text, &cursor, token, 50, ' ' );
+        UFR_TEST_EQUAL_STR (token, "B Teste sem fechar aspas" );
+        UFR_TEST_EQUAL (cursor, 28);
+        printf ("%s\n", token);
+
+        bool res3 = ufr_args_flex_div (text, &cursor, token, 50, ' ' );
+        UFR_TEST_FALSE (res3);
+        UFR_TEST_EQUAL_STR (token, "" );
+        UFR_TEST_EQUAL (cursor, 28);
+        printf ("%s\n", token);
+
+
+
         while (ufr_args_flex_div (text, &cursor, token, 50, '\'' )) {
             printf (" - \"%s\"\n", token);
         }
+        UFR_TEST_EQUAL_STR (text, " A 'B Teste sem fechar aspas" );
+        printf ("\n");
+
+
+        
+        ufr_test_print_result ();
+        printf ("------------------------------------------------------------------------------");
+        printf ("\n"); 
+
+    }
+
+    // Teste 5: Maior que tamanho máx 
+    {
+        const char* text = "teste,2,3,4,5,6,7";
+        uint16_t cursor  = 0;
+        char token[5];
+
+        UFR_TEST_NOT_NULL (token);
+
+        printf ("            Teste 5 - Maior que o tamanho máx token\n\n");
+        printf ("Teste frase de entrada: \"%s\"\n", text);
+        printf ("Tokens\n");
+
+        const bool res1 = ufr_args_flex_div (text, &cursor, token, 5, ',' );
+        UFR_TEST_TRUE (res1);
+        UFR_TEST_EQUAL_STR (token, "test" );
+        UFR_TEST_EQUAL (cursor, 5);
+        printf ("%s\n", token);
+    
+        const bool res2 = ufr_args_flex_div (text, &cursor, token, 5, ',' );
+        UFR_TEST_TRUE (res2);
+        UFR_TEST_EQUAL_STR (token, "2" );
+        UFR_TEST_EQUAL (cursor, 7);
+        printf ("%s\n", token);
+      
+       
+
 
     }
 
