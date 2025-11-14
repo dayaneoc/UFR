@@ -1,8 +1,8 @@
 <h1>Unificado Framework para Robótica (UFR)</h1>
-<p style="font-size:40px;">Repositório de testes unitários feito para o projeto UFR</p>
-<p>Repositório do projeto - https://github.com/VRI-UFPR/ufr?tab=readme-ov-file</p>
+<h3 style="font-size:40px;">Repositório de testes unitários feito para o projeto UFR.</h3>
+<h3>Repositório do projeto - https://github.com/VRI-UFPR/ufr?tab=readme-ov-file</h3>
 
-<span style="font-size:40px;">Repositório de testes unitários feito para o projeto UFR</span>
+
 
 
 
